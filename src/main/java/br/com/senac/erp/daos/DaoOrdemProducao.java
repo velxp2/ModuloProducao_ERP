@@ -3,6 +3,7 @@ package br.com.senac.erp.daos;
 import br.com.senac.erp.Connection.ConnectionUtils;
 import br.com.senac.erp.model.MateriaPrima;
 import br.com.senac.erp.model.OrdemProducao;
+import br.com.senac.erp.model.OrdemVenda;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -116,9 +117,34 @@ public class DaoOrdemProducao {
             ResultSet resultMateria = preparedStatements.executeQuery();
 
             while (resultVenda.next()) {
-                int id = resultVenda.getInt("ID");
-                String nome = resultVenda.getString("NOME");
-//                lista.add(new OrdemProducao(id, nome, sexo, datanascimento, cpf, endereco, telefone, email));
+                int id_ordem = resultVenda.getInt("ID");
+                int recursos = resultVenda.getInt("RECURSOS");
+                String status = resultVenda.getString("STATU");
+                String dataInicio = resultVenda.getString("DATAINICIO");
+                String dataTermino = resultVenda.getString("DATATERMINO");
+                String dataPrev = resultVenda.getString("DATAPREV");
+                String tempoEstimado = resultVenda.getString("TEMPOESTIMADO");
+                
+                int id_venda = resultVenda.getInt("ID_ORDEMVENDA");
+                String produto = resultVenda.getString("PRODUTO");
+                int quantidade = resultVenda.getInt("QUANTIDADE");
+                OrdemVenda venda = new OrdemVenda();
+                venda.setId(id_venda);
+                venda.setProduto(produto);
+                venda.setQuantidadeProd(quantidade);
+                
+                List<MateriaPrima> materias = new ArrayList<>();
+                for (int i = 0; i < resultMateria.getFetchSize(); i++) {
+                    int id_materia = resultMateria.getInt("ID_MATERIAPRIMA");
+                    String nome = resultMateria.getString("NOME");
+                    int quantidadeMateria = resultMateria.getInt("QUANTIDADE");
+                    String fabricante = resultMateria.getString("FABRICANTE");
+                    boolean selecionado = resultMateria.getBoolean("SELECIONADO");
+                    
+                    materias.add(new MateriaPrima(id_materia, nome, quantidadeMateria, fabricante, selecionado));
+                }
+                lista.add(new OrdemProducao(id_ordem, venda, materias, recursos, status, 
+                        dataInicio, dataTermino, dataPrev, tempoEstimado));
             }
         } catch (SQLException e) {
             printSQLException(e);

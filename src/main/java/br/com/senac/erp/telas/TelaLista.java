@@ -32,11 +32,14 @@ public class TelaLista extends javax.swing.JFrame {
      */
     public TelaLista() {
         initComponents();
+        carregarTabelaOrdens();
     }
 
     DaoOrdemVenda daoVenda = new DaoOrdemVenda();
     DaoMateriaPrima daoMateria = new DaoMateriaPrima();
     DaoOrdemProducao daoProducao = new DaoOrdemProducao();
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -745,6 +748,24 @@ public class TelaLista extends javax.swing.JFrame {
                     m.getNome(),
                     m.getQuantidade(),
                     m.getFabricante()
+                });
+            }
+        } catch (Exception e) {
+        }
+
+    }
+    
+    private void carregarTabelaOrdens() {
+
+        DefaultTableModel model = (DefaultTableModel) ordemTable.getModel();
+        model.setNumRows(0);
+        try {
+            for (OrdemProducao p : daoProducao.listar()) {
+                model.addRow(new Object[]{
+                    p.getId(),
+                    p.getOrdemVenda().getProduto(),
+                    p.getDataInicio(),
+                    p.getStatu(),
                 });
             }
         } catch (Exception e) {
