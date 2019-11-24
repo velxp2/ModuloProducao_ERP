@@ -509,7 +509,6 @@ public class TelaLista extends javax.swing.JFrame {
         ordemV.setQuantidadeProd(Integer.parseInt(quantidadeProdTxt.getText()));
         ordemP.setOrdemVenda(ordemV);
         ordemP.setId(Integer.parseInt(codigoTxt.getText()));
-        for()
         ordemP.setRecursos((int) opeSpinner.getValue());
         ordemP.setDataInicio(dataIniciotxt.getText());
         ordemP.setDataPrevista(dataPrevtxt.getText());
