@@ -43,7 +43,7 @@ public class DaoOrdemProducao {
                 preparedStatement.setString(3, ordem.getStatu());
                 preparedStatement.setString(4, ordem.getDataInicio());
                 preparedStatement.setString(5, ordem.getDataTermino());
-                preparedStatement.setString(6, ordem.getDataTermino());
+                preparedStatement.setString(6, ordem.getDataPrevista());
                 preparedStatement.setString(7, ordem.getTempoEstimado());
                 preparedStatement.setInt(8, ordem.getOrdemVenda().getId());
                 try {
