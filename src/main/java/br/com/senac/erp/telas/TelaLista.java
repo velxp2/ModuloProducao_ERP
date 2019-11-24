@@ -50,13 +50,6 @@ public class TelaLista extends javax.swing.JFrame {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
-        ListaPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        ordemTable = new javax.swing.JTable();
-        btnInserir = new javax.swing.JButton();
-        btnAlterar = new javax.swing.JButton();
-        OrdemProducaoLabel = new javax.swing.JLabel();
-        btnRelatorio = new javax.swing.JButton();
         producaoPanel = new javax.swing.JPanel();
         OrdemProducaoLabel1 = new javax.swing.JLabel();
         codigoLabel = new javax.swing.JLabel();
@@ -74,7 +67,7 @@ public class TelaLista extends javax.swing.JFrame {
         opeSpinner = new javax.swing.JSpinner();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        statusCombo = new javax.swing.JComboBox<String>();
+        statusCombo = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -89,84 +82,17 @@ public class TelaLista extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         dataTermtxt = new javax.swing.JFormattedTextField();
         tempotxt = new javax.swing.JFormattedTextField();
+        ListaPanel = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ordemTable = new javax.swing.JTable();
+        btnInserir = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
+        OrdemProducaoLabel = new javax.swing.JLabel();
+        btnRelatorio = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         mainPanel.setLayout(new java.awt.CardLayout());
-
-        ordemTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(ordemTable);
-
-        btnInserir.setText("Nova Ordem");
-        btnInserir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInserirActionPerformed(evt);
-            }
-        });
-
-        btnAlterar.setText("Alterar Ordem");
-        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAlterarActionPerformed(evt);
-            }
-        });
-
-        OrdemProducaoLabel.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
-        OrdemProducaoLabel.setText("Ordem de Produção");
-
-        btnRelatorio.setText("Gerar Relatório");
-        btnRelatorio.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRelatorioActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout ListaPanelLayout = new javax.swing.GroupLayout(ListaPanel);
-        ListaPanel.setLayout(ListaPanelLayout);
-        ListaPanelLayout.setHorizontalGroup(
-            ListaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ListaPanelLayout.createSequentialGroup()
-                .addContainerGap(156, Short.MAX_VALUE)
-                .addGroup(ListaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(ListaPanelLayout.createSequentialGroup()
-                        .addComponent(btnInserir, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(227, 227, 227)
-                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(OrdemProducaoLabel)
-                    .addComponent(jScrollPane1))
-                .addContainerGap(157, Short.MAX_VALUE))
-            .addGroup(ListaPanelLayout.createSequentialGroup()
-                .addGap(454, 454, 454)
-                .addComponent(btnRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        ListaPanelLayout.setVerticalGroup(
-            ListaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ListaPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(OrdemProducaoLabel)
-                .addGap(50, 50, 50)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(85, 85, 85)
-                .addGroup(ListaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnInserir)
-                    .addComponent(btnAlterar))
-                .addGap(18, 18, 18)
-                .addComponent(btnRelatorio)
-                .addContainerGap(70, Short.MAX_VALUE))
-        );
-
-        mainPanel.add(ListaPanel, "listaPanel");
 
         OrdemProducaoLabel1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         OrdemProducaoLabel1.setText("Ordem de Produção");
@@ -243,7 +169,7 @@ public class TelaLista extends javax.swing.JFrame {
 
         jLabel7.setText("Status da produção:");
 
-        statusCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione um status ...", "Em produção", "Pêndente", "Aguardando manutenção de ativo", "Aguardando recurso", "Finalizado", "Cancelado" }));
+        statusCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um status ...", "Em produção", "Pêndente", "Aguardando manutenção de ativo", "Aguardando recurso", "Finalizado", "Cancelado" }));
 
         jLabel8.setText("Data de início:");
 
@@ -469,6 +395,80 @@ public class TelaLista extends javax.swing.JFrame {
         );
 
         mainPanel.add(producaoPanel, "producaoPanel");
+
+        ordemTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(ordemTable);
+
+        btnInserir.setText("Nova Ordem");
+        btnInserir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInserirActionPerformed(evt);
+            }
+        });
+
+        btnAlterar.setText("Alterar Ordem");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
+
+        OrdemProducaoLabel.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        OrdemProducaoLabel.setText("Ordem de Produção");
+
+        btnRelatorio.setText("Gerar Relatório");
+        btnRelatorio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRelatorioActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout ListaPanelLayout = new javax.swing.GroupLayout(ListaPanel);
+        ListaPanel.setLayout(ListaPanelLayout);
+        ListaPanelLayout.setHorizontalGroup(
+            ListaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(ListaPanelLayout.createSequentialGroup()
+                .addContainerGap(156, Short.MAX_VALUE)
+                .addGroup(ListaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(ListaPanelLayout.createSequentialGroup()
+                        .addComponent(btnInserir, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(227, 227, 227)
+                        .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(OrdemProducaoLabel)
+                    .addComponent(jScrollPane1))
+                .addContainerGap(157, Short.MAX_VALUE))
+            .addGroup(ListaPanelLayout.createSequentialGroup()
+                .addGap(454, 454, 454)
+                .addComponent(btnRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        ListaPanelLayout.setVerticalGroup(
+            ListaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, ListaPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(OrdemProducaoLabel)
+                .addGap(50, 50, 50)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(85, 85, 85)
+                .addGroup(ListaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnInserir)
+                    .addComponent(btnAlterar))
+                .addGap(18, 18, 18)
+                .addComponent(btnRelatorio)
+                .addContainerGap(70, Short.MAX_VALUE))
+        );
+
+        mainPanel.add(ListaPanel, "listaPanel");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
