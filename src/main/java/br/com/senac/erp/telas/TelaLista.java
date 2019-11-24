@@ -38,8 +38,6 @@ public class TelaLista extends javax.swing.JFrame {
     DaoOrdemVenda daoVenda = new DaoOrdemVenda();
     DaoMateriaPrima daoMateria = new DaoMateriaPrima();
     DaoOrdemProducao daoProducao = new DaoOrdemProducao();
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -527,6 +525,8 @@ public class TelaLista extends javax.swing.JFrame {
         produtoProdTxt.setEditable(false);
         quantidadeProdTxt.setEditable(false);
         statusCombo.setEditable(false);
+        recursosTxt.setEditable(false);
+        materiaTable.setEnabled(false);
         carregarTabelaMateriaPrima();
 
 
@@ -536,13 +536,54 @@ public class TelaLista extends javax.swing.JFrame {
         CardLayout card = (CardLayout) mainPanel.getLayout();
         card.show(mainPanel, "producaoPanel");
 
-        codigoTxt.setEditable(false);
-        produtoProdTxt.setEditable(false);
-        quantidadeProdTxt.setEditable(false);
-        dataIniciotxt.setEditable(false);
-        dataPrevtxt.setEditable(false);
-        statusCombo.setEditable(false);
+        codigoTxt.setEnabled(false);
+        codigoVendaTxt.setEnabled(false);
+        produtoProdTxt.setEnabled(false);
+        quantidadeProdTxt.setEnabled(false);
+        dataIniciotxt.setEnabled(false);
+        dataPrevtxt.setEnabled(false);
+        btnBuscarVenda.setEnabled(false);
+        tempotxt.setEnabled(false);
+        recursosTxt.setEnabled(false);
+        materiaTable.setEnabled(false);
         carregarTabelaMateriaPrima();
+        
+        int row = ordemTable.getSelectedRow();
+        int id = (int) ordemTable.getValueAt(row, 0);
+
+        OrdemProducao ordemP = daoProducao.obter(id);
+
+        List<MateriaPrima> materias = ordemP.getMaterias();
+        
+        try {
+
+            codigoTxt.setText(Integer.toString(ordemP.getId()));
+            codigoVendaTxt.setText(Integer.toString(ordemP.getOrdemVenda().getId()));
+            produtoProdTxt.setText(ordemP.getOrdemVenda().getProduto());
+            quantidadeProdTxt.setText(Integer.toString(ordemP.getOrdemVenda().getQuantidadeProd()));
+
+            DefaultTableModel model = (DefaultTableModel) materiaTable.getModel();
+            model.setNumRows(0);
+
+            for (MateriaPrima m : materias) {
+                model.addRow(new Object[]{
+                    m.isSelecionado(),
+                    m.getId(),
+                    m.getNome(),
+                    m.getQuantidade(),
+                    m.getFabricante()
+                });
+            }
+
+            recursosTxt.setText(Integer.toString(ordemP.getRecurso()));
+            statusCombo.setSelectedItem(ordemP.getStatu());
+            dataIniciotxt.setText(ordemP.getDataInicio());
+            dataPrevtxt.setText(ordemP.getDataPrevista());
+            dataTermtxt.setText(ordemP.getDataTermino());
+            tempotxt.setText(ordemP.getTempoEstimado());
+        } catch (Exception e) {
+        }
+
 
     }//GEN-LAST:event_btnAlterarActionPerformed
 
@@ -602,8 +643,8 @@ public class TelaLista extends javax.swing.JFrame {
             int rows = materiaTable.getRowCount();
             int cont = 0;
             for (int i = 0; i < rows; i++) {
-                if((boolean)materiaTable.getValueAt(i, 0)){
-                cont++;
+                if ((boolean) materiaTable.getValueAt(i, 0)) {
+                    cont++;
                 }
             }
             if (cont > 0) {
@@ -754,7 +795,7 @@ public class TelaLista extends javax.swing.JFrame {
         }
 
     }
-    
+
     private void carregarTabelaOrdens() {
 
         DefaultTableModel model = (DefaultTableModel) ordemTable.getModel();
@@ -765,8 +806,7 @@ public class TelaLista extends javax.swing.JFrame {
                     p.getId(),
                     p.getOrdemVenda().getProduto(),
                     p.getDataInicio(),
-                    p.getStatu(),
-                });
+                    p.getStatu(),});
             }
         } catch (Exception e) {
         }

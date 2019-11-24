@@ -22,12 +22,12 @@ public class OrdemProducao {
     private String dataTermino;
     private String dataPrevista;
     private String tempoEstimado;
-    private int recursos;
 
     public OrdemProducao() {
     }
 
-    public OrdemProducao(int id, OrdemVenda ordemVenda, List<MateriaPrima> materias, int recurso, String statu, String dataInicio, String dataTermino, String dataPrevista, String tempoEstimado) {
+    public OrdemProducao(int id, OrdemVenda ordemVenda, List<MateriaPrima> materias, int recurso, String statu, 
+            String dataInicio, String dataTermino, String dataPrevista, String tempoEstimado) {
         this.id = id;
         this.ordemVenda = ordemVenda;
         this.materias = materias;
@@ -109,14 +109,6 @@ public class OrdemProducao {
 
     public void setTempoEstimado(String tempoEstimado) {
         this.tempoEstimado = tempoEstimado;
-    }
-
-    public int getRecursos() {
-        return recursos;
-    }
-
-    public void setRecursos(int recursos) {
-        this.recursos = recursos;
     }
     
 }
