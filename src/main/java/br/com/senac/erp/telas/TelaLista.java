@@ -33,12 +33,10 @@ public class TelaLista extends javax.swing.JFrame {
     public TelaLista() {
         initComponents();
     }
-    
+
     DaoOrdemVenda daoVenda = new DaoOrdemVenda();
     DaoMateriaPrima daoMateria = new DaoMateriaPrima();
     DaoOrdemProducao daoProducao = new DaoOrdemProducao();
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -102,9 +100,24 @@ public class TelaLista extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Número da Ordem", "Produto", "Data de Ínicio", "Status"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(ordemTable);
 
         btnInserir.setText("Nova Ordem");
@@ -502,24 +515,24 @@ public class TelaLista extends javax.swing.JFrame {
     private void btnInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInserirActionPerformed
         CardLayout card = (CardLayout) mainPanel.getLayout();
         card.show(mainPanel, "producaoPanel");
-        
+
         Random random = new Random();
-        int contador = random.nextInt(5000);   
-        
+        int contador = random.nextInt(5000);
+
         codigoTxt.setText("0" + Integer.toString((contador)));
         codigoTxt.setEditable(false);
         produtoProdTxt.setEditable(false);
         quantidadeProdTxt.setEditable(false);
         statusCombo.setEditable(false);
         carregarTabelaMateriaPrima();
-        
-        
+
+
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         CardLayout card = (CardLayout) mainPanel.getLayout();
         card.show(mainPanel, "producaoPanel");
-        
+
         codigoTxt.setEditable(false);
         produtoProdTxt.setEditable(false);
         quantidadeProdTxt.setEditable(false);
@@ -527,7 +540,7 @@ public class TelaLista extends javax.swing.JFrame {
         dataPrevtxt.setEditable(false);
         statusCombo.setEditable(false);
         carregarTabelaMateriaPrima();
-        
+
     }//GEN-LAST:event_btnAlterarActionPerformed
 
     private void codigoTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoTxtActionPerformed
@@ -541,15 +554,18 @@ public class TelaLista extends javax.swing.JFrame {
 
     private void btnBuscarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVendaActionPerformed
         String idVenda = codigoVendaTxt.getText();
-        
-        if("".equals(idVenda)){
+
+        if ("".equals(idVenda)) {
             JOptionPane.showMessageDialog(null, "Digite o número da Ordem de Venda!");
         } else {
-            OrdemVenda ordemVenda = daoVenda.obter(Integer.parseInt(idVenda));
-            
-            produtoProdTxt.setText(ordemVenda.getProduto());
-            quantidadeProdTxt.setText(Integer.toString(ordemVenda.getQuantidadeProd()));
-            
+            try {
+                OrdemVenda ordemVenda = daoVenda.obter(Integer.parseInt(idVenda));
+                produtoProdTxt.setText(ordemVenda.getProduto());
+                quantidadeProdTxt.setText(Integer.toString(ordemVenda.getQuantidadeProd()));
+            } catch (Exception e) {
+
+            }
+
         }
     }//GEN-LAST:event_btnBuscarVendaActionPerformed
 
@@ -578,51 +594,61 @@ public class TelaLista extends javax.swing.JFrame {
         OrdemProducao ordemP = new OrdemProducao();
         OrdemVenda ordemV = new OrdemVenda();
         List<MateriaPrima> materias = new ArrayList<>();
-        
-        
+
         try {
-        ordemV.setId(Integer.parseInt(codigoVendaTxt.getText()));
-        ordemV.setProduto(produtoProdTxt.getText());
-        ordemV.setQuantidadeProd(Integer.parseInt(quantidadeProdTxt.getText()));
-        ordemP.setOrdemVenda(ordemV);
-        
-        ordemP.setId(Integer.parseInt(codigoTxt.getText()));
-        //int recursos = ;
-        ordemP.setRecurso(Integer.parseInt(recursosTxt.getText()));
-        ordemP.setStatu((String) statusCombo.getSelectedItem());
-        ordemP.setDataInicio(dataIniciotxt.getText());
-        ordemP.setDataPrevista(dataPrevtxt.getText());
-        ordemP.setDataTermino(dataTermtxt.getText());
-        ordemP.setTempoEstimado(tempotxt.getText());
-        
-        int rows = materiaTable.getRowCount();
-        
+            int rows = materiaTable.getRowCount();
+            int cont = 0;
             for (int i = 0; i < rows; i++) {
-                MateriaPrima materia = new MateriaPrima();
-                if((boolean) materiaTable.getValueAt(i, 0)){
-                materia.setSelecionado((boolean) materiaTable.getValueAt(i, 0));
-                materia.setId((int) materiaTable.getValueAt(i, 1));
-                materia.setNome((String) materiaTable.getValueAt(i, 2));
-                int quantidade = (int) materiaTable.getValueAt(i, 3);
-                materia.setQuantidade(quantidade);
-                materia.setFabricante((String) materiaTable.getValueAt(i, 4));
-                int quantidadeUtilizada = (int) materiaTable.getValueAt(i, 3);
-                materia.setQuantidadeUtilizada(quantidadeUtilizada);
-                materias.add(materia);
+                if((boolean)materiaTable.getValueAt(i, 0)){
+                cont++;
                 }
             }
-        ordemP.setMaterias(materias);
-        
-        daoProducao.inserir(ordemP);
+            if (cont > 0) {
+                ordemV.setId(Integer.parseInt(codigoVendaTxt.getText()));
+                ordemV.setProduto(produtoProdTxt.getText());
+                ordemV.setQuantidadeProd(Integer.parseInt(quantidadeProdTxt.getText()));
+                ordemP.setOrdemVenda(ordemV);
+
+                ordemP.setId(Integer.parseInt(codigoTxt.getText()));
+                ordemP.setRecurso(Integer.parseInt(recursosTxt.getText()));
+                ordemP.setStatu((String) statusCombo.getSelectedItem());
+                ordemP.setDataInicio(dataIniciotxt.getText());
+                ordemP.setDataPrevista(dataPrevtxt.getText());
+                ordemP.setDataTermino(dataTermtxt.getText());
+                ordemP.setTempoEstimado(tempotxt.getText());
+
+                for (int i = 0; i < rows; i++) {
+
+                    MateriaPrima materia = new MateriaPrima();
+                    if ((boolean) materiaTable.getValueAt(i, 0)) {
+                        materia.setSelecionado((boolean) materiaTable.getValueAt(i, 0));
+                        materia.setId((int) materiaTable.getValueAt(i, 1));
+                        materia.setNome((String) materiaTable.getValueAt(i, 2));
+                        int quantidade = (int) materiaTable.getValueAt(i, 3);
+                        materia.setQuantidade(quantidade);
+                        materia.setFabricante((String) materiaTable.getValueAt(i, 4));
+                        int quantidadeUtilizada = (int) materiaTable.getValueAt(i, 3);
+                        materia.setQuantidadeUtilizada(quantidadeUtilizada);
+                        materias.add(materia);
+                    }
+                }
+                ordemP.setMaterias(materias);
+                daoProducao.inserir(ordemP);
+            } else {
+                JOptionPane.showMessageDialog(null, "Selecione os recursos que serão utilizado na produção!",
+                        "Falta de Recursos", JOptionPane.WARNING_MESSAGE);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(TelaLista.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Ordem de Produção não gerada!"
-                    + "Contate o desenvolvedor.");
+                    + "\nContate o desenvolvedor.", "Erro!", JOptionPane.WARNING_MESSAGE);
         }
+        CardLayout card = (CardLayout) mainPanel.getLayout();
+        card.show(mainPanel, "listaPanel");
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void statusComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusComboActionPerformed
-        
+
     }//GEN-LAST:event_statusComboActionPerformed
 
     /**
@@ -706,23 +732,23 @@ public class TelaLista extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField tempotxt;
     // End of variables declaration//GEN-END:variables
 
-    private void carregarTabelaMateriaPrima(){
-        
+    private void carregarTabelaMateriaPrima() {
+
         DefaultTableModel model = (DefaultTableModel) materiaTable.getModel();
         model.setNumRows(0);
         try {
             boolean b = false;
             for (MateriaPrima m : daoMateria.listar()) {
-            model.addRow(new Object[]{
-                m.isSelecionado(),
-                m.getId(),
-                m.getNome(),
-                m.getQuantidade(),
-                m.getFabricante()
-            });
-        }
+                model.addRow(new Object[]{
+                    m.isSelecionado(),
+                    m.getId(),
+                    m.getNome(),
+                    m.getQuantidade(),
+                    m.getFabricante()
+                });
+            }
         } catch (Exception e) {
         }
-        
+
     }
 }

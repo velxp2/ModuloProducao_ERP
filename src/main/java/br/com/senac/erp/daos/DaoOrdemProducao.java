@@ -1,6 +1,4 @@
-
 package br.com.senac.erp.daos;
-
 
 import br.com.senac.erp.Connection.ConnectionUtils;
 import br.com.senac.erp.model.MateriaPrima;
@@ -16,51 +14,59 @@ import java.util.List;
  *
  * @author VictorGuilhermeSeraf
  */
-public class DaoOrdemProducao { 
-    
+public class DaoOrdemProducao {
+
     private static final String INSERT_ORDEM_SQL = "INSERT INTO ERP.ORDEMPRODUCAO (ID, RECURSOS, STATU, DATAINICIO, "
             + "DATATERMINO, DATAPREV, TEMPOESTIMADO, ID_ORDEMVENDA) VALUES (?, ?, ?, ?, ?, ?, ?,?);";
     private static final String INSERT_ORDEM_MATERIA_SQL = "INSERT INTO ERP.ORDEMPRODUCAO_MATERIAPRIMA (ID_ORDEMPRODUCAO, ID_MATERIAPRIMA) "
             + "VALUES (?, ?);";
 //    private static final String SELECT_ORDEM_BY_ID = "SELECT * FROM ERP.ORDEMPRODUCAO WHERE (ID =?)";
-//    private static final String SELECT_ALL_ORDENS = "SELECT * FROM ERP.ORDEMPRODUCAO;";
+    private static final String SELECT_ALL_ORDENS_VENDA = "SELECT * FROM ERP.ORDEMPRODUCAO OP \n"
+            + "INNER JOIN ERP.ORDEMVENDA OV ON OP.ID_ORDEMVENDA = OV.ID;";
+    private static final String SELECT_ALL_ORDENS_MATERIA = "SELECT * FROM ERP.ORDEMPRODUCAO OP \n"
+            + "INNER JOIN ERP.ORDEMPRODUCAO_MATERIAPRIMA OM ON OP.ID = OM.ID_ORDEMPRODUCAO\n"
+            + "INNER JOIN ERP.MATERIAPRIMA M ON M.ID = OM.ID_MATERIAPRIMA;";
 //    private static final String DELETE_ORDEM_SQL = "DELETE FROM ERP.ORDEMPRODUCAO WHERE (ID = ?)";
 //    private static final String UPDATE_ORDEM_SQL = "UPDATE ERP.ORDEMPRODUCAO SET NOME = ?,EMAIL = ? WHERE (ID = ?)";
-   
-    public DaoOrdemProducao(){}
-    
+
+    public DaoOrdemProducao() {
+    }
+
     public void inserir(OrdemProducao ordem) throws SQLException {
         System.out.println(INSERT_ORDEM_SQL);
         System.out.println(INSERT_ORDEM_MATERIA_SQL);
         List<MateriaPrima> materias = ordem.getMaterias();
-        
+
         try (Connection connection = ConnectionUtils.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ORDEM_SQL);
-            PreparedStatement preparedStatements = connection.prepareStatement(INSERT_ORDEM_MATERIA_SQL);)
-            {
-                preparedStatement.setInt(1, ordem.getId());
-                preparedStatement.setInt(2, ordem.getRecurso());
-                preparedStatement.setString(3, ordem.getStatu());
-                preparedStatement.setString(4, ordem.getDataInicio());
-                preparedStatement.setString(5, ordem.getDataTermino());
-                preparedStatement.setString(6, ordem.getDataPrevista());
-                preparedStatement.setString(7, ordem.getTempoEstimado());
-                preparedStatement.setInt(8, ordem.getOrdemVenda().getId());
-                try {
-                    for(MateriaPrima m : materias){
-                        preparedStatements.setInt(1, ordem.getId());
-                        preparedStatements.setInt(2, m.getId());
-                        preparedStatements.executeUpdate();
-                    }
-                    System.out.println(preparedStatement);
-                } catch (SQLException e) {
-                    printSQLException(e);
-                }
-                
-                System.out.println(preparedStatement);
+                PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ORDEM_SQL);
+                PreparedStatement preparedStatements = connection.prepareStatement(INSERT_ORDEM_MATERIA_SQL);) {
+            preparedStatement.setInt(1, ordem.getId());
+            preparedStatement.setInt(2, ordem.getRecurso());
+            preparedStatement.setString(3, ordem.getStatu());
+            preparedStatement.setString(4, ordem.getDataInicio());
+            preparedStatement.setString(5, ordem.getDataTermino());
+            preparedStatement.setString(6, ordem.getDataPrevista());
+            preparedStatement.setString(7, ordem.getTempoEstimado());
+            preparedStatement.setInt(8, ordem.getOrdemVenda().getId());
+
+            System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
+            try {
+                for (MateriaPrima m : materias) {
+                    preparedStatements.setInt(1, ordem.getId());
+                    preparedStatements.setInt(2, m.getId());
+                    preparedStatements.executeUpdate();
+                }
+                System.out.println(preparedStatement);
+            } catch (SQLException e) {
+                printSQLException(e);
+            }
         } catch (SQLException e) {
             printSQLException(e);
+        }
+        try {
+
+        } catch (Exception e) {
         }
     }
 
@@ -94,36 +100,31 @@ public class DaoOrdemProducao {
 //        return ordem;
 //    }
 //
-//    public List <OrdemProducao> listar() {
-//
-//        // using try-with-resources to avoid closing resources (boiler plate code)
-//        List <OrdemProducao> lista = new ArrayList <>();
-//        // Step 1: Establishing a Connection
-//        try (Connection connection =  ConnectionUtils.getConnection();
-//
-//            // Step 2:Create a statement using connection object
-//            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_ORDENS);) {
-//            System.out.println(preparedStatement);
-//            // Step 3: Execute the query or update query
-//            ResultSet rs = preparedStatement.executeQuery();
-//
-//            // Step 4: Process the ResultSet object.
-//            while (rs.next()) {
-//                Long id = rs.getLong("ID");
-//                String nome = rs.getString("NOME");
-//                String sexo = rs.getString("SEXO");
-//                String datanascimento = rs.getString("DATANASCIMENTO");
-//                String cpf = rs.getString("CPF");
-//                String endereco = rs.getString("ENDERECO");
-//                String telefone = rs.getString("TELEFONE");
-//                String email = rs.getString("EMAIL");
-////                lista.add(new OrdemProducao(id, nome, sexo, datanascimento, cpf, endereco, telefone, email));
-//            }
-//        } catch (SQLException e) {
-//            printSQLException(e);
-//        }
-//        return lista;
-//    }
+    public List<OrdemProducao> listar() {
+
+        System.out.println(SELECT_ALL_ORDENS_VENDA);
+        System.out.println(SELECT_ALL_ORDENS_MATERIA);
+        List<OrdemProducao> lista = new ArrayList<>();
+        
+        try (Connection connection = ConnectionUtils.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_ORDENS_VENDA);
+                PreparedStatement preparedStatements = connection.prepareStatement(SELECT_ALL_ORDENS_VENDA);) {
+            System.out.println(preparedStatement);
+            System.out.println(preparedStatements);
+
+            ResultSet resultVenda = preparedStatement.executeQuery();
+            ResultSet resultMateria = preparedStatements.executeQuery();
+
+            while (resultVenda.next()) {
+                int id = resultVenda.getInt("ID");
+                String nome = resultVenda.getString("NOME");
+//                lista.add(new OrdemProducao(id, nome, sexo, datanascimento, cpf, endereco, telefone, email));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return lista;
+    }
 //
 //    public boolean deletar(int id) throws SQLException {
 //        boolean rowDeleted;
@@ -154,7 +155,7 @@ public class DaoOrdemProducao {
 //    }
 
     private void printSQLException(SQLException ex) {
-        for (Throwable e: ex) {
+        for (Throwable e : ex) {
             if (e instanceof SQLException) {
                 e.printStackTrace(System.err);
                 System.err.println("SQLState: " + ((SQLException) e).getSQLState());
