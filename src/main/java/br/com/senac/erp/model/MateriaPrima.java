@@ -15,7 +15,7 @@ public class MateriaPrima {
     private String nome;
     private int quantidade;
     private String fabricante;
-    private boolean selecionado = false;
+    private boolean selecionado;
     private int quantidadeUtilizada;
     
     public MateriaPrima() {
@@ -28,6 +28,14 @@ public class MateriaPrima {
         this.fabricante = fabricante;
     }
 
+    public MateriaPrima(int id, String nome, int quantidade, String fabricante, boolean selecionado) {
+        this.id = id;
+        this.nome = nome;
+        this.quantidade = quantidade;
+        this.fabricante = fabricante;
+        this.selecionado = selecionado;
+    }
+    
     public int getId() {
         return id;
     }

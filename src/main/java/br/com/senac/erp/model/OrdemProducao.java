@@ -5,7 +5,6 @@
  */
 package br.com.senac.erp.model;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,7 +16,7 @@ public class OrdemProducao {
     private int id;
     private OrdemVenda ordemVenda;
     private List<MateriaPrima> materias;
-    private int QuantidadeRecurso;
+    private int recurso;
     private String statu;
     private String dataInicio;
     private String dataTermino;
@@ -28,17 +27,16 @@ public class OrdemProducao {
     public OrdemProducao() {
     }
 
-    public OrdemProducao(int id, OrdemVenda ordemVenda, List<MateriaPrima> materias, int QuantidadeRecurso, String statu, String dataInicio, String dataTermino, String dataPrevista, String tempoEstimado, int recursos) {
+    public OrdemProducao(int id, OrdemVenda ordemVenda, List<MateriaPrima> materias, int recurso, String statu, String dataInicio, String dataTermino, String dataPrevista, String tempoEstimado) {
         this.id = id;
         this.ordemVenda = ordemVenda;
         this.materias = materias;
-        this.QuantidadeRecurso = QuantidadeRecurso;
+        this.recurso = recurso;
         this.statu = statu;
         this.dataInicio = dataInicio;
         this.dataTermino = dataTermino;
         this.dataPrevista = dataPrevista;
         this.tempoEstimado = tempoEstimado;
-        this.recursos = recursos;
     }
 
     public int getId() {
@@ -65,12 +63,12 @@ public class OrdemProducao {
         this.materias = materias;
     }
 
-    public int getQuantidadeRecurso() {
-        return QuantidadeRecurso;
+    public int getRecurso() {
+        return recurso;
     }
 
-    public void setQuantidadeRecurso(int QuantidadeRecurso) {
-        this.QuantidadeRecurso = QuantidadeRecurso;
+    public void setRecurso(int recurso) {
+        this.recurso = recurso;
     }
 
     public String getStatu() {
