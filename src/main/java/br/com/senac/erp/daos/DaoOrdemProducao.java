@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package br.com.senac.erp.daos;
 
 
@@ -10,8 +6,6 @@ import br.com.senac.erp.Connection.ConnectionUtils;
 import br.com.senac.erp.model.MateriaPrima;
 import br.com.senac.erp.model.OrdemProducao;
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,10 +22,10 @@ public class DaoOrdemProducao {
             + "DATATERMINO, DATAPREV, TEMPOESTIMADO, ID_ORDEMVENDA) VALUES (?, ?, ?, ?, ?, ?, ?,?);";
     private static final String INSERT_ORDEM_MATERIA_SQL = "INSERT INTO ERP.ORDEMPRODUCAO_MATERIAPRIMA VALUES (ID_ORDEMPRODUCAO, ID_MATERIAPRIMA) "
             + "VALUES (?, ?);";
-    private static final String SELECT_ORDEM_BY_ID = "SELECT ID,NOME, SEXO, DATANASCIMENTO, CPF, ENDERECO, TELEFONE, EMAIL FROM TABACARIA.CLIENTE WHERE ID =?";
-    private static final String SELECT_ALL_ORDENS = "SELECT * FROM TABACARIA.CLIENTE;";
-    private static final String DELETE_ORDEM_SQL = "DELETE FROM TABACARIA.CLIENTE WHERE ID = ?;";
-    private static final String UPDATE_ORDEM_SQL = "UPDATE TABACARIA.CLIENTE SET NOME = ?,SEXO= ?, DATANASCIMENTO = ?, CPF= ?,ENDERECO = ?, TELEFONE = ?, EMAIL = ? WHERE ID = ?;";
+    private static final String SELECT_ORDEM_BY_ID = "SELECT * FROM ERP.ORDEMPRODUCAO WHERE (ID =?)";
+    private static final String SELECT_ALL_ORDENS = "SELECT * FROM ERP.ORDEMPRODUCAO;";
+    private static final String DELETE_ORDEM_SQL = "DELETE FROM ERP.ORDEMPRODUCAO WHERE (ID = ?)";
+    private static final String UPDATE_ORDEM_SQL = "UPDATE ERP.ORDEMPRODUCAO SET NOME = ?,EMAIL = ? WHERE (ID = ?)";
    
     public DaoOrdemProducao(){}
     
@@ -91,7 +85,7 @@ public class DaoOrdemProducao {
                 String endereco = rs.getString("ENDERECO");
                 String telefone = rs.getString("TELEFONE");
                 String email = rs.getString("EMAIL");
-                ordem = new Cliente(id, nome, sexo, datanascimento, cpf, endereco, telefone, email);
+//                ordem = new Cliente(id, nome, sexo, datanascimento, cpf, endereco, telefone, email);
                 
             }
         } catch (SQLException e) {
@@ -123,7 +117,7 @@ public class DaoOrdemProducao {
                 String endereco = rs.getString("ENDERECO");
                 String telefone = rs.getString("TELEFONE");
                 String email = rs.getString("EMAIL");
-                lista.add(new OrdemProducao(id, nome, sexo, datanascimento, cpf, endereco, telefone, email));
+//                lista.add(new OrdemProducao(id, nome, sexo, datanascimento, cpf, endereco, telefone, email));
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -145,13 +139,13 @@ public class DaoOrdemProducao {
         boolean rowUpdated;
         try (Connection connection =  ConnectionUtils.getConnection();
             PreparedStatement statement = connection.prepareStatement(UPDATE_ORDEM_SQL);) {
-            statement.setString(1, ordem.getNome());
-            statement.setString(2, ordem.getSexo());
-            statement.setString(3, ordem.getDataNascimento());
-            statement.setString(4, ordem.getCpf());
-            statement.setString(5, ordem.getEndereco());
-            statement.setString(6, ordem.getTelefone());
-            statement.setString(7, ordem.getEmail());
+//            statement.setString(1, ordem.getNome());
+//            statement.setString(2, ordem.getSexo());
+//            statement.setString(3, ordem.getDataNascimento());
+//            statement.setString(4, ordem.getCpf());
+//            statement.setString(5, ordem.getEndereco());
+//            statement.setString(6, ordem.getTelefone());
+//            statement.setString(7, ordem.getEmail());
             statement.setLong(8, ordem.getId());
 
             rowUpdated = statement.executeUpdate() > 0;
