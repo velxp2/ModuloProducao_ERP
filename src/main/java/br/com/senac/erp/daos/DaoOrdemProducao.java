@@ -70,95 +70,95 @@ public class DaoOrdemProducao {
         }
     }
 
-    public OrdemProducao obter(long id) {
-        OrdemProducao ordem = null;
-        // Step 1: Establishing a Connection
-        try (Connection connection = ConnectionUtils.getConnection();
-            // Step 2:Create a statement using connection object
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ORDEM_BY_ID);) {
-            preparedStatement.setLong(1, id);
-            System.out.println(preparedStatement);
-            // Step 3: Execute the query or update query
-            ResultSet rs = preparedStatement.executeQuery();
-
-            // Step 4: Process the ResultSet object.
-            while (rs.next()) {
-                
-                String nome = rs.getString("NOME");
-                String sexo = rs.getString("SEXO");
-                String datanascimento = rs.getString("DATANASCIMENTO");
-                String cpf = rs.getString("CPF");
-                String endereco = rs.getString("ENDERECO");
-                String telefone = rs.getString("TELEFONE");
-                String email = rs.getString("EMAIL");
-                ordem = new Cliente(id, nome, sexo, datanascimento, cpf, endereco, telefone, email);
-                
-            }
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-        return ordem;
-    }
-
-    public List <OrdemProducao> listar() {
-
-        // using try-with-resources to avoid closing resources (boiler plate code)
-        List <OrdemProducao> lista = new ArrayList <>();
-        // Step 1: Establishing a Connection
-        try (Connection connection =  ConnectionUtils.getConnection();
-
-            // Step 2:Create a statement using connection object
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_ORDENS);) {
-            System.out.println(preparedStatement);
-            // Step 3: Execute the query or update query
-            ResultSet rs = preparedStatement.executeQuery();
-
-            // Step 4: Process the ResultSet object.
-            while (rs.next()) {
-                Long id = rs.getLong("ID");
-                String nome = rs.getString("NOME");
-                String sexo = rs.getString("SEXO");
-                String datanascimento = rs.getString("DATANASCIMENTO");
-                String cpf = rs.getString("CPF");
-                String endereco = rs.getString("ENDERECO");
-                String telefone = rs.getString("TELEFONE");
-                String email = rs.getString("EMAIL");
-                lista.add(new OrdemProducao(id, nome, sexo, datanascimento, cpf, endereco, telefone, email));
-            }
-        } catch (SQLException e) {
-            printSQLException(e);
-        }
-        return lista;
-    }
-
-    public boolean deletar(int id) throws SQLException {
-        boolean rowDeleted;
-        try (Connection connection =  ConnectionUtils.getConnection(); 
-            PreparedStatement statement = connection.prepareStatement(DELETE_ORDEM_SQL);) {
-            statement.setInt(1, id);
-            rowDeleted = statement.executeUpdate() > 0;
-        }
-        return rowDeleted;
-    }
-
-    public boolean editar(OrdemProducao ordem) throws SQLException {
-        boolean rowUpdated;
-        try (Connection connection =  ConnectionUtils.getConnection();
-            PreparedStatement statement = connection.prepareStatement(UPDATE_ORDEM_SQL);) {
-            statement.setString(1, ordem.getNome());
-            statement.setString(2, ordem.getSexo());
-            statement.setString(3, ordem.getDataNascimento());
-            statement.setString(4, ordem.getCpf());
-            statement.setString(5, ordem.getEndereco());
-            statement.setString(6, ordem.getTelefone());
-            statement.setString(7, ordem.getEmail());
-            statement.setLong(8, ordem.getId());
-
-            rowUpdated = statement.executeUpdate() > 0;
-        }
-        return rowUpdated;
-    }
-
+//    public OrdemProducao obter(long id) {
+//        OrdemProducao ordem = null;
+//        // Step 1: Establishing a Connection
+//        try (Connection connection = ConnectionUtils.getConnection();
+//            // Step 2:Create a statement using connection object
+//            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ORDEM_BY_ID);) {
+//            preparedStatement.setLong(1, id);
+//            System.out.println(preparedStatement);
+//            // Step 3: Execute the query or update query
+//            ResultSet rs = preparedStatement.executeQuery();
+//
+//            // Step 4: Process the ResultSet object.
+//            while (rs.next()) {
+//                
+//                String nome = rs.getString("NOME");
+//                String sexo = rs.getString("SEXO");
+//                String datanascimento = rs.getString("DATANASCIMENTO");
+//                String cpf = rs.getString("CPF");
+//                String endereco = rs.getString("ENDERECO");
+//                String telefone = rs.getString("TELEFONE");
+//                String email = rs.getString("EMAIL");
+//                ordem = new Cliente(id, nome, sexo, datanascimento, cpf, endereco, telefone, email);
+//                
+//            }
+//        } catch (SQLException e) {
+//            printSQLException(e);
+//        }
+//        return ordem;
+//    }
+//
+//    public List <OrdemProducao> listar() {
+//
+//        // using try-with-resources to avoid closing resources (boiler plate code)
+//        List <OrdemProducao> lista = new ArrayList <>();
+//        // Step 1: Establishing a Connection
+//        try (Connection connection =  ConnectionUtils.getConnection();
+//
+//            // Step 2:Create a statement using connection object
+//            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_ORDENS);) {
+//            System.out.println(preparedStatement);
+//            // Step 3: Execute the query or update query
+//            ResultSet rs = preparedStatement.executeQuery();
+//
+//            // Step 4: Process the ResultSet object.
+//            while (rs.next()) {
+//                Long id = rs.getLong("ID");
+//                String nome = rs.getString("NOME");
+//                String sexo = rs.getString("SEXO");
+//                String datanascimento = rs.getString("DATANASCIMENTO");
+//                String cpf = rs.getString("CPF");
+//                String endereco = rs.getString("ENDERECO");
+//                String telefone = rs.getString("TELEFONE");
+//                String email = rs.getString("EMAIL");
+//                lista.add(new OrdemProducao(id, nome, sexo, datanascimento, cpf, endereco, telefone, email));
+//            }
+//        } catch (SQLException e) {
+//            printSQLException(e);
+//        }
+//        return lista;
+//    }
+//
+//    public boolean deletar(int id) throws SQLException {
+//        boolean rowDeleted;
+//        try (Connection connection =  ConnectionUtils.getConnection(); 
+//            PreparedStatement statement = connection.prepareStatement(DELETE_ORDEM_SQL);) {
+//            statement.setInt(1, id);
+//            rowDeleted = statement.executeUpdate() > 0;
+//        }
+//        return rowDeleted;
+//    }
+//
+//    public boolean editar(OrdemProducao ordem) throws SQLException {
+//        boolean rowUpdated;
+//        try (Connection connection =  ConnectionUtils.getConnection();
+//            PreparedStatement statement = connection.prepareStatement(UPDATE_ORDEM_SQL);) {
+//            statement.setString(1, ordem.getNome());
+//            statement.setString(2, ordem.getSexo());
+//            statement.setString(3, ordem.getDataNascimento());
+//            statement.setString(4, ordem.getCpf());
+//            statement.setString(5, ordem.getEndereco());
+//            statement.setString(6, ordem.getTelefone());
+//            statement.setString(7, ordem.getEmail());
+//            statement.setLong(8, ordem.getId());
+//
+//            rowUpdated = statement.executeUpdate() > 0;
+//        }
+//        return rowUpdated;
+//    }
+//
     private void printSQLException(SQLException ex) {
         for (Throwable e: ex) {
             if (e instanceof SQLException) {

@@ -446,15 +446,16 @@ public class TelaLista extends javax.swing.JFrame {
                     .addComponent(jLabel7)
                     .addComponent(statusCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(producaoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel11)
-                    .addComponent(dataIniciotxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dataPrevtxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(producaoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(producaoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel12)
-                        .addComponent(dataTermtxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(dataTermtxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(producaoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel8)
+                        .addComponent(jLabel9)
+                        .addComponent(jLabel11)
+                        .addComponent(dataIniciotxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(dataPrevtxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(producaoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
@@ -498,34 +499,6 @@ public class TelaLista extends javax.swing.JFrame {
         dataIniciotxt.setEditable(true);
         dataPrevtxt.setEditable(true);
         carregarTabelaMateriaPrima();
-        
-        OrdemProducao ordemP = new OrdemProducao();
-        OrdemVenda ordemV = new OrdemVenda();
-        List<MateriaPrima> materias = new ArrayList<>();
-        
-        try {
-        ordemV.setId(Integer.parseInt(codigoVendaTxt.getText()));
-        ordemV.setProduto(produtoProdTxt.getText());
-        ordemV.setQuantidadeProd(Integer.parseInt(quantidadeProdTxt.getText()));
-        ordemP.setOrdemVenda(ordemV);
-        ordemP.setId(Integer.parseInt(codigoTxt.getText()));
-        ordemP.setRecursos((int) opeSpinner.getValue());
-        ordemP.setDataInicio(dataIniciotxt.getText());
-        ordemP.setDataPrevista(dataPrevtxt.getText());
-        ordemP.setDataTermino(dataTermtxt.getText());
-        ordemP.setTempoEstimado(tempotxt.getText());
-        
-        for(){
-            
-        }
-        
-        daoProducao.inserir(ordemP);
-        } catch (SQLException ex) {
-            Logger.getLogger(TelaLista.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Ordem de Produção não gerada!"
-                    + "Contate o desenvolvedor.");
-        }
-        
         
     }//GEN-LAST:event_btnInserirActionPerformed
 
@@ -585,6 +558,30 @@ public class TelaLista extends javax.swing.JFrame {
 
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         // TODO add your handling code here:
+        OrdemProducao ordemP = new OrdemProducao();
+        OrdemVenda ordemV = new OrdemVenda();
+        List<MateriaPrima> materias = new ArrayList<>();
+        
+        try {
+        ordemV.setId(Integer.parseInt(codigoVendaTxt.getText()));
+        ordemV.setProduto(produtoProdTxt.getText());
+        ordemV.setQuantidadeProd(Integer.parseInt(quantidadeProdTxt.getText()));
+        ordemP.setOrdemVenda(ordemV);
+        ordemP.setId(Integer.parseInt(codigoTxt.getText()));
+        ordemP.setRecursos((int) opeSpinner.getValue());
+        ordemP.setStatu((String) statusCombo.getSelectedItem());
+        ordemP.setDataInicio(dataIniciotxt.getText());
+        ordemP.setDataPrevista(dataPrevtxt.getText());
+        ordemP.setDataTermino(dataTermtxt.getText());
+        ordemP.setTempoEstimado(tempotxt.getText());
+        
+        
+        daoProducao.inserir(ordemP);
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaLista.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Ordem de Produção não gerada!"
+                    + "Contate o desenvolvedor.");
+        }
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
