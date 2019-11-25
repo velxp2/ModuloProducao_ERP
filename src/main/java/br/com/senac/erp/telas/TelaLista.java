@@ -8,7 +8,13 @@ import br.com.senac.erp.model.MateriaPrima;
 import br.com.senac.erp.model.OrdemProducao;
 import br.com.senac.erp.model.OrdemVenda;
 import br.com.senac.erp.sendEmail.JavaMailApp;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.CardLayout;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -637,7 +643,40 @@ public class TelaLista extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatorioActionPerformed
-        // TODO add your handling code here:
+          // criação do objeto documento
+        Document document = new Document();
+        
+        try {
+            
+            Document doc = new Document();
+            PdfWriter.getInstance(doc, new FileOutputStream("C:\\Users\\Matheus\\Desktop\\Relatorio.pdf"));
+            doc.open();
+            PdfPTable pdfTable = new PdfPTable(ordemTable.getColumnCount());
+            //adding table headers
+            for (int i = 0; i < ordemTable.getColumnCount(); i++) {
+                pdfTable.addCell(ordemTable.getColumnName(i));
+            }
+            //extracting data from the JTable and inserting it to PdfPTable
+            for (int rows = 0; rows < ordemTable.getRowCount() - 1; rows++) {
+                for (int cols = 0; cols < ordemTable.getColumnCount(); cols++) {
+                    
+                    
+                    pdfTable.addCell(ordemTable.getModel().getValueAt(rows, cols).toString());
+
+                }
+            }
+            doc.add(pdfTable);
+            doc.close();
+            
+            
+            
+        } catch(DocumentException de) {
+            System.err.println(de.getMessage());
+        } catch(IOException ioe) {
+            System.err.println(ioe.getMessage());
+        } finally {
+            document.close();
+        }
     }//GEN-LAST:event_btnRelatorioActionPerformed
 
     private void codigoVendaTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codigoVendaTxtActionPerformed

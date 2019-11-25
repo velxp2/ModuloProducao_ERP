@@ -34,6 +34,13 @@
         <artifactId>javax.mail</artifactId>
         <version>1.6.0</version>
         </dependency>
+        
+         <dependency>
+            <groupId>com.lowagie</groupId>
+            <artifactId>itext</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+        
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

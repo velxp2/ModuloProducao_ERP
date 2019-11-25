@@ -119,4 +119,4 @@ public class JavaMailApp {
             throw new RuntimeException(e);
         }
     }
-}
+  }
