@@ -707,7 +707,7 @@ public class TelaLista extends javax.swing.JFrame {
                     limpar();
                 }
 
-
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Selecione os recursos que serão utilizado na produção!",
                         "Falta de Recursos", JOptionPane.WARNING_MESSAGE);
