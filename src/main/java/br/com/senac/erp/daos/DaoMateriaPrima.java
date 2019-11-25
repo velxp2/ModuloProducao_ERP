@@ -42,7 +42,8 @@ public class DaoMateriaPrima {
                 int quantidade = rs.getInt("QUANTIDADE");
                 String fabricante = rs.getString("FABRICANTE");
                 boolean selecionado = rs.getBoolean("SELECIONADO");
-                lista.add(new MateriaPrima(id, nome, quantidade, fabricante, selecionado));
+                int quantidadeUtilizada = rs.getInt("QUANTUTILIZADA");
+                lista.add(new MateriaPrima(id, nome, quantidade, fabricante, selecionado, quantidadeUtilizada));
             }
         } catch (SQLException e) {
             printSQLException(e);

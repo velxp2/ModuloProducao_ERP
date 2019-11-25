@@ -21,19 +21,13 @@ public class MateriaPrima {
     public MateriaPrima() {
     }
 
-    public MateriaPrima(int id, String nome, int quantidade, String fabricante) {
-        this.id = id;
-        this.nome = nome;
-        this.quantidade = quantidade;
-        this.fabricante = fabricante;
-    }
-
-    public MateriaPrima(int id, String nome, int quantidade, String fabricante, boolean selecionado) {
+    public MateriaPrima(int id, String nome, int quantidade, String fabricante, boolean selecionado, int quantidadeUtilizada) {
         this.id = id;
         this.nome = nome;
         this.quantidade = quantidade;
         this.fabricante = fabricante;
         this.selecionado = selecionado;
+        this.quantidadeUtilizada = quantidadeUtilizada;
     }
     
     public int getId() {
@@ -80,7 +74,7 @@ public class MateriaPrima {
         return selecionado;
     }
 
-    public void setSelecionado(boolean campoDesativado) {
-        this.selecionado = campoDesativado;
+    public void setSelecionado(boolean selecionado) {
+        this.selecionado = selecionado;
     }
 }

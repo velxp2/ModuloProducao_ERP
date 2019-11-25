@@ -21,7 +21,11 @@ public class DaoOrdemProducao {
             + "DATATERMINO, DATAPREV, TEMPOESTIMADO, ID_ORDEMVENDA) VALUES (?, ?, ?, ?, ?, ?, ?,?);";
     private static final String INSERT_ORDEM_MATERIA_SQL = "INSERT INTO ERP.ORDEMPRODUCAO_MATERIAPRIMA (ID_ORDEMPRODUCAO, ID_MATERIAPRIMA) "
             + "VALUES (?, ?);";
-//    private static final String SELECT_ORDEM_BY_ID = "SELECT * FROM ERP.ORDEMPRODUCAO WHERE (ID =?)";
+    private static final String SELECT_ORDEM_BY_ID = "SELECT  OP.*, OV.PRODUTO, OV.QUANTIDADE FROM ERP.ORDEMPRODUCAO OP \n"
+            + "INNER JOIN ERP.ORDEMVENDA OV ON OP.ID_ORDEMVENDA = OV.ID WHERE (OP.ID =?)";
+    private static final String SELECT_ORDEMPRIMA_BY_ID = "SELECT OP.*, M.NOME, M.QUANTIDADE, M.FABRICANTE, M.SELECIONADO, M.QUANTUTILIZADA, OM.ID_MATERIAPRIMA FROM ERP.ORDEMPRODUCAO OP \n"
+            + "INNER JOIN ERP.ORDEMPRODUCAO_MATERIAPRIMA OM ON OP.ID = OM.ID_ORDEMPRODUCAO\n"
+            + "INNER JOIN ERP.MATERIAPRIMA M ON M.ID = OM.ID_MATERIAPRIMA WHERE (OP.ID =?)";
     private static final String SELECT_ALL_ORDENS_VENDA = "SELECT * FROM ERP.ORDEMPRODUCAO OP \n"
             + "INNER JOIN ERP.ORDEMVENDA OV ON OP.ID_ORDEMVENDA = OV.ID;";
     private static final String SELECT_ALL_ORDENS_MATERIA = "SELECT * FROM ERP.ORDEMPRODUCAO OP \n"
@@ -71,42 +75,63 @@ public class DaoOrdemProducao {
         }
     }
 
-//    public OrdemProducao obter(long id) {
-//        OrdemProducao ordem = null;
-//        // Step 1: Establishing a Connection
-//        try (Connection connection = ConnectionUtils.getConnection();
-//            // Step 2:Create a statement using connection object
-//            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ORDEM_BY_ID);) {
-//            preparedStatement.setLong(1, id);
-//            System.out.println(preparedStatement);
-//            // Step 3: Execute the query or update query
-//            ResultSet rs = preparedStatement.executeQuery();
-//
-//            // Step 4: Process the ResultSet object.
-//            while (rs.next()) {
-//                
-//                String nome = rs.getString("NOME");
-//                String sexo = rs.getString("SEXO");
-//                String datanascimento = rs.getString("DATANASCIMENTO");
-//                String cpf = rs.getString("CPF");
-//                String endereco = rs.getString("ENDERECO");
-//                String telefone = rs.getString("TELEFONE");
-//                String email = rs.getString("EMAIL");
-////                ordem = new Cliente(id, nome, sexo, datanascimento, cpf, endereco, telefone, email);
-//                
-//            }
-//        } catch (SQLException e) {
-//            printSQLException(e);
-//        }
-//        return ordem;
-//    }
-//
+    public OrdemProducao obter(int id) {
+        OrdemProducao ordem = null;
+
+        try (Connection connection = ConnectionUtils.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ORDEM_BY_ID);
+                PreparedStatement preparedStatements = connection.prepareStatement(SELECT_ORDEMPRIMA_BY_ID);) {
+            preparedStatement.setInt(1, id);
+            preparedStatements.setInt(1, id);
+            System.out.println(preparedStatement);
+            System.out.println(preparedStatements);
+
+            ResultSet resultVenda = preparedStatement.executeQuery();
+            ResultSet resultMateria = preparedStatements.executeQuery();
+
+            while (resultVenda.next()) {
+                int recursos = resultVenda.getInt("RECURSOS");
+                String status = resultVenda.getString("STATU");
+                String dataInicio = resultVenda.getString("DATAINICIO");
+                String dataTermino = resultVenda.getString("DATATERMINO");
+                String dataPrev = resultVenda.getString("DATAPREV");
+                String tempoEstimado = resultVenda.getString("TEMPOESTIMADO");
+
+                int id_venda = resultVenda.getInt("ID_ORDEMVENDA");
+                String produto = resultVenda.getString("PRODUTO");
+                int quantidade = resultVenda.getInt("QUANTIDADE");
+                OrdemVenda venda = new OrdemVenda();
+                venda.setId(id_venda);
+                venda.setProduto(produto);
+                venda.setQuantidadeProd(quantidade);
+
+                List<MateriaPrima> materias = new ArrayList<>();
+                while (resultMateria.next()) {
+                    int id_materia = resultMateria.getInt("ID_MATERIAPRIMA");
+                    String nome = resultMateria.getString("NOME");
+                    int quantidadeMateria = resultMateria.getInt("QUANTIDADE");
+                    String fabricante = resultMateria.getString("FABRICANTE");
+                    boolean selecionado = resultMateria.getBoolean("SELECIONADO");
+                    int quantidadeUtilizada = resultMateria.getInt("QUANTUTILIZADA");
+
+                    materias.add(new MateriaPrima(id_materia, nome, quantidadeMateria, fabricante, selecionado, quantidadeUtilizada));
+                }
+                ordem = new OrdemProducao(id, venda, materias, recursos, status, dataInicio,
+                        dataTermino, dataPrev, tempoEstimado);
+
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return ordem;
+    }
+
     public List<OrdemProducao> listar() {
 
         System.out.println(SELECT_ALL_ORDENS_VENDA);
         System.out.println(SELECT_ALL_ORDENS_MATERIA);
         List<OrdemProducao> lista = new ArrayList<>();
-        
+
         try (Connection connection = ConnectionUtils.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_ORDENS_VENDA);
                 PreparedStatement preparedStatements = connection.prepareStatement(SELECT_ALL_ORDENS_VENDA);) {
@@ -124,7 +149,7 @@ public class DaoOrdemProducao {
                 String dataTermino = resultVenda.getString("DATATERMINO");
                 String dataPrev = resultVenda.getString("DATAPREV");
                 String tempoEstimado = resultVenda.getString("TEMPOESTIMADO");
-                
+
                 int id_venda = resultVenda.getInt("ID_ORDEMVENDA");
                 String produto = resultVenda.getString("PRODUTO");
                 int quantidade = resultVenda.getInt("QUANTIDADE");
@@ -132,7 +157,7 @@ public class DaoOrdemProducao {
                 venda.setId(id_venda);
                 venda.setProduto(produto);
                 venda.setQuantidadeProd(quantidade);
-                
+
                 List<MateriaPrima> materias = new ArrayList<>();
                 for (int i = 0; i < resultMateria.getFetchSize(); i++) {
                     int id_materia = resultMateria.getInt("ID_MATERIAPRIMA");
@@ -140,10 +165,11 @@ public class DaoOrdemProducao {
                     int quantidadeMateria = resultMateria.getInt("QUANTIDADE");
                     String fabricante = resultMateria.getString("FABRICANTE");
                     boolean selecionado = resultMateria.getBoolean("SELECIONADO");
-                    
-                    materias.add(new MateriaPrima(id_materia, nome, quantidadeMateria, fabricante, selecionado));
+                    int quantidadeUtilizada = resultMateria.getInt("QUANTUTILIZADA");
+
+                    materias.add(new MateriaPrima(id_materia, nome, quantidadeMateria, fabricante, selecionado, quantidadeUtilizada));
                 }
-                lista.add(new OrdemProducao(id_ordem, venda, materias, recursos, status, 
+                lista.add(new OrdemProducao(id_ordem, venda, materias, recursos, status,
                         dataInicio, dataTermino, dataPrev, tempoEstimado));
             }
         } catch (SQLException e) {

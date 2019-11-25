@@ -35,8 +35,6 @@ public class TelaLista extends javax.swing.JFrame {
     DaoOrdemVenda daoVenda = new DaoOrdemVenda();
     DaoMateriaPrima daoMateria = new DaoMateriaPrima();
     DaoOrdemProducao daoProducao = new DaoOrdemProducao();
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -83,10 +81,10 @@ public class TelaLista extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         dataIniciotxt = new javax.swing.JFormattedTextField();
         dataPrevtxt = new javax.swing.JFormattedTextField();
-        jLabel12 = new javax.swing.JLabel();
         dataTermtxt = new javax.swing.JFormattedTextField();
         tempotxt = new javax.swing.JFormattedTextField();
         recursosTxt = new javax.swing.JFormattedTextField();
+        btnAlteracao = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -323,8 +321,6 @@ public class TelaLista extends javax.swing.JFrame {
         dataPrevtxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         dataPrevtxt.setText("00/00/0000");
 
-        jLabel12.setText("Data Término:");
-
         try {
             dataTermtxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
         } catch (java.text.ParseException ex) {
@@ -351,6 +347,14 @@ public class TelaLista extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         recursosTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        recursosTxt.setText("  ");
+
+        btnAlteracao.setText("Alterar");
+        btnAlteracao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlteracaoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout producaoPanelLayout = new javax.swing.GroupLayout(producaoPanel);
         producaoPanel.setLayout(producaoPanelLayout);
@@ -387,16 +391,16 @@ public class TelaLista extends javax.swing.JFrame {
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(dataTermtxt, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel12)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(producaoPanelLayout.createSequentialGroup()
                         .addGroup(producaoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(producaoPanelLayout.createSequentialGroup()
+                                .addComponent(btnAlteracao, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(45, 45, 45)
                                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(45, 45, 45)
                                 .addComponent(btnVoltar, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, producaoPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel4)
@@ -456,7 +460,7 @@ public class TelaLista extends javax.swing.JFrame {
                     .addComponent(produtoProdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(quantidadeProdTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(producaoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -474,9 +478,7 @@ public class TelaLista extends javax.swing.JFrame {
                     .addComponent(statusCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(producaoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(producaoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel12)
-                        .addComponent(dataTermtxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(dataTermtxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(producaoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel8)
                         .addComponent(jLabel9)
@@ -491,7 +493,8 @@ public class TelaLista extends javax.swing.JFrame {
                 .addGroup(producaoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalvar)
                     .addComponent(btnVoltar)
-                    .addComponent(btnCancelar))
+                    .addComponent(btnCancelar)
+                    .addComponent(btnAlteracao))
                 .addGap(45, 45, 45))
         );
 
@@ -520,25 +523,81 @@ public class TelaLista extends javax.swing.JFrame {
 
         codigoTxt.setText("0" + Integer.toString((contador)));
         codigoTxt.setEditable(false);
+        codigoTxt.setEnabled(true);
+        codigoVendaTxt.setEnabled(true);
+        produtoProdTxt.setEnabled(true);
         produtoProdTxt.setEditable(false);
+        quantidadeProdTxt.setEnabled(true);
         quantidadeProdTxt.setEditable(false);
-        statusCombo.setEditable(false);
+        dataIniciotxt.setEnabled(true);
+        dataPrevtxt.setEnabled(true);
+        btnBuscarVenda.setEnabled(true);
+        tempotxt.setEnabled(true);
+        recursosTxt.setEnabled(true);
+        materiaTable.setEnabled(true);
+        btnAlteracao.setEnabled(false);
+        btnSalvar.setEnabled(true);
         carregarTabelaMateriaPrima();
-
 
     }//GEN-LAST:event_btnInserirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         CardLayout card = (CardLayout) mainPanel.getLayout();
         card.show(mainPanel, "producaoPanel");
+        
+        btnSalvar.setEnabled(false);
+        btnAlteracao.setEnabled(true);
 
-        codigoTxt.setEditable(false);
-        produtoProdTxt.setEditable(false);
-        quantidadeProdTxt.setEditable(false);
-        dataIniciotxt.setEditable(false);
-        dataPrevtxt.setEditable(false);
-        statusCombo.setEditable(false);
-        carregarTabelaMateriaPrima();
+        codigoTxt.setEnabled(false);
+        codigoVendaTxt.setEnabled(false);
+        produtoProdTxt.setEnabled(false);
+        quantidadeProdTxt.setEnabled(false);
+        dataIniciotxt.setEnabled(false);
+        dataPrevtxt.setEnabled(false);
+        btnBuscarVenda.setEnabled(false);
+        tempotxt.setEnabled(false);
+        recursosTxt.setEnabled(false);
+        materiaTable.setEnabled(false);
+
+        int row = ordemTable.getSelectedRow();
+        int id = (int) ordemTable.getValueAt(row, 0);
+
+        OrdemProducao ordemP = daoProducao.obter(id);
+
+        List<MateriaPrima> materias = ordemP.getMaterias();
+
+        System.out.println(materias);
+
+        try {
+
+            codigoTxt.setText(Integer.toString(ordemP.getId()));
+            codigoVendaTxt.setText(Integer.toString(ordemP.getOrdemVenda().getId()));
+            produtoProdTxt.setText(ordemP.getOrdemVenda().getProduto());
+            quantidadeProdTxt.setText(Integer.toString(ordemP.getOrdemVenda().getQuantidadeProd()));
+
+            DefaultTableModel model = (DefaultTableModel) materiaTable.getModel();
+            model.setNumRows(0);
+
+            for (MateriaPrima m : materias) {
+                model.addRow(new Object[]{
+                    m.isSelecionado(),
+                    m.getId(),
+                    m.getNome(),
+                    m.getQuantidade(),
+                    m.getFabricante()
+                });
+            }
+
+            recursosTxt.setText("0" + Integer.toString(ordemP.getRecurso()));
+            statusCombo.setSelectedItem(ordemP.getStatu());
+            dataIniciotxt.setText(ordemP.getDataInicio());
+            dataPrevtxt.setText(ordemP.getDataPrevista());
+            dataTermtxt.setText(ordemP.getDataTermino());
+            tempotxt.setText(ordemP.getTempoEstimado());
+            
+        } catch (Exception e) {
+        }
+
 
     }//GEN-LAST:event_btnAlterarActionPerformed
 
@@ -549,6 +608,7 @@ public class TelaLista extends javax.swing.JFrame {
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         CardLayout card = (CardLayout) mainPanel.getLayout();
         card.show(mainPanel, "listaPanel");
+        limpar();
     }//GEN-LAST:event_btnVoltarActionPerformed
 
     private void btnBuscarVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarVendaActionPerformed
@@ -598,8 +658,8 @@ public class TelaLista extends javax.swing.JFrame {
             int rows = materiaTable.getRowCount();
             int cont = 0;
             for (int i = 0; i < rows; i++) {
-                if((boolean)materiaTable.getValueAt(i, 0)){
-                cont++;
+                if ((boolean) materiaTable.getValueAt(i, 0)) {
+                    cont++;
                 }
             }
             if (cont > 0) {
@@ -633,9 +693,21 @@ public class TelaLista extends javax.swing.JFrame {
                 }
                 ordemP.setMaterias(materias);
                 daoProducao.inserir(ordemP);
+
                 
                 JavaMailApp.dispararEmail(ordemP);
                 
+
+                int resposta = JOptionPane.showConfirmDialog(null, "Deseja Salvar essa Ordem de produção?",
+                        "Salvar", JOptionPane.OK_CANCEL_OPTION);
+                if (resposta == 0) {
+                    CardLayout card = (CardLayout) mainPanel.getLayout();
+                    card.show(mainPanel, "listaPanel");
+                    carregarTabelaOrdens();
+                    limpar();
+                }
+
+
             } else {
                 JOptionPane.showMessageDialog(null, "Selecione os recursos que serão utilizado na produção!",
                         "Falta de Recursos", JOptionPane.WARNING_MESSAGE);
@@ -645,13 +717,16 @@ public class TelaLista extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Ordem de Produção não gerada!"
                     + "\nContate o desenvolvedor.", "Erro!", JOptionPane.WARNING_MESSAGE);
         }
-        CardLayout card = (CardLayout) mainPanel.getLayout();
-        card.show(mainPanel, "listaPanel");
+
     }//GEN-LAST:event_btnSalvarActionPerformed
 
     private void statusComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_statusComboActionPerformed
 
     }//GEN-LAST:event_statusComboActionPerformed
+
+    private void btnAlteracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlteracaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAlteracaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -695,6 +770,7 @@ public class TelaLista extends javax.swing.JFrame {
     private javax.swing.JPanel ListaPanel;
     private javax.swing.JLabel OrdemProducaoLabel;
     private javax.swing.JLabel OrdemProducaoLabel1;
+    private javax.swing.JButton btnAlteracao;
     private javax.swing.JButton btnAlterar;
     private javax.swing.JButton btnBuscarVenda;
     private javax.swing.JButton btnCancelar;
@@ -712,7 +788,6 @@ public class TelaLista extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -746,14 +821,14 @@ public class TelaLista extends javax.swing.JFrame {
                     m.getId(),
                     m.getNome(),
                     m.getQuantidade(),
-                    m.getFabricante()
+                    m.getFabricante(),
+                    m.getQuantidadeUtilizada()
                 });
             }
         } catch (Exception e) {
         }
-
     }
-    
+
     private void carregarTabelaOrdens() {
 
         DefaultTableModel model = (DefaultTableModel) ordemTable.getModel();
@@ -764,11 +839,22 @@ public class TelaLista extends javax.swing.JFrame {
                     p.getId(),
                     p.getOrdemVenda().getProduto(),
                     p.getDataInicio(),
-                    p.getStatu(),
-                });
+                    p.getStatu(),});
             }
         } catch (Exception e) {
         }
-
+    }
+    
+    private void limpar(){
+        codigoTxt.setText("");
+        codigoVendaTxt.setText("");
+        produtoProdTxt.setText("");
+        quantidadeProdTxt.setText("");
+        recursosTxt.setText("");
+        statusCombo.setSelectedIndex(0);
+        dataIniciotxt.setText("00/00/0000");
+        dataPrevtxt.setText("00/00/0000");
+        dataTermtxt.setText("00/00/0000");
+        tempotxt.setText("");
     }
 }
