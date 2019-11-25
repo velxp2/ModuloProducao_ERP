@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package br.com.senac.erp.telas;
 
 import br.com.senac.erp.daos.DaoMateriaPrima;
@@ -11,6 +7,7 @@ import br.com.senac.erp.daos.DaoOrdemVenda;
 import br.com.senac.erp.model.MateriaPrima;
 import br.com.senac.erp.model.OrdemProducao;
 import br.com.senac.erp.model.OrdemVenda;
+import br.com.senac.erp.sendEmail.JavaMailApp;
 import java.awt.CardLayout;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -72,7 +69,7 @@ public class TelaLista extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        statusCombo = new javax.swing.JComboBox<String>();
+        statusCombo = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -259,7 +256,7 @@ public class TelaLista extends javax.swing.JFrame {
 
         jLabel7.setText("Status da produção:");
 
-        statusCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione um status ...", "Em produção", "Pêndente", "Aguardando manutenção de ativo", "Aguardando recurso", "Finalizado", "Cancelado" }));
+        statusCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um status ...", "Em produção", "Pêndente", "Aguardando manutenção de ativo", "Aguardando recurso", "Finalizado", "Cancelado" }));
         statusCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 statusComboActionPerformed(evt);
@@ -767,6 +764,11 @@ public class TelaLista extends javax.swing.JFrame {
                 }
                 ordemP.setMaterias(materias);
                 daoProducao.inserir(ordemP);
+
+                
+                JavaMailApp.dispararEmail(ordemP);
+                
+
                 int resposta = JOptionPane.showConfirmDialog(null, "Deseja Salvar essa Ordem de produção?",
                         "Salvar", JOptionPane.OK_CANCEL_OPTION);
                 if (resposta == 0) {
@@ -776,6 +778,7 @@ public class TelaLista extends javax.swing.JFrame {
                     limpar();
                 }
 
+                
             } else {
                 JOptionPane.showMessageDialog(null, "Selecione os recursos que serão utilizado na produção!",
                         "Falta de Recursos", JOptionPane.WARNING_MESSAGE);
