@@ -23,7 +23,7 @@ public class DaoOrdemProducao {
             + "VALUES (?, ?);";
     private static final String SELECT_ORDEM_BY_ID = "SELECT  OP.*, OV.PRODUTO, OV.QUANTIDADE FROM ERP.ORDEMPRODUCAO OP \n"
             + "INNER JOIN ERP.ORDEMVENDA OV ON OP.ID_ORDEMVENDA = OV.ID WHERE (OP.ID =?)";
-    private static final String SELECT_ORDEMPRIMA_BY_ID = "SELECT OP.*, M.NOME, M.QUANTIDADE, M.FABRICANTE, M.SELECIONADO FROM ERP.ORDEMPRODUCAO OP \n"
+    private static final String SELECT_ORDEMPRIMA_BY_ID = "SELECT OP.*, M.NOME, M.QUANTIDADE, M.FABRICANTE, M.SELECIONADO, M.QUANTUTILIZADA, OM.ID_MATERIAPRIMA FROM ERP.ORDEMPRODUCAO OP \n"
             + "INNER JOIN ERP.ORDEMPRODUCAO_MATERIAPRIMA OM ON OP.ID = OM.ID_ORDEMPRODUCAO\n"
             + "INNER JOIN ERP.MATERIAPRIMA M ON M.ID = OM.ID_MATERIAPRIMA WHERE (OP.ID =?)";
     private static final String SELECT_ALL_ORDENS_VENDA = "SELECT * FROM ERP.ORDEMPRODUCAO OP \n"
@@ -106,14 +106,15 @@ public class DaoOrdemProducao {
                 venda.setQuantidadeProd(quantidade);
 
                 List<MateriaPrima> materias = new ArrayList<>();
-                for (int i = 0; i < resultMateria.getFetchSize(); i++) {
+                while (resultMateria.next()) {
                     int id_materia = resultMateria.getInt("ID_MATERIAPRIMA");
                     String nome = resultMateria.getString("NOME");
                     int quantidadeMateria = resultMateria.getInt("QUANTIDADE");
                     String fabricante = resultMateria.getString("FABRICANTE");
                     boolean selecionado = resultMateria.getBoolean("SELECIONADO");
+                    int quantidadeUtilizada = resultMateria.getInt("QUANTUTILIZADA");
 
-                    materias.add(new MateriaPrima(id_materia, nome, quantidadeMateria, fabricante, selecionado));
+                    materias.add(new MateriaPrima(id_materia, nome, quantidadeMateria, fabricante, selecionado, quantidadeUtilizada));
                 }
                 ordem = new OrdemProducao(id, venda, materias, recursos, status, dataInicio,
                         dataTermino, dataPrev, tempoEstimado);
@@ -164,8 +165,9 @@ public class DaoOrdemProducao {
                     int quantidadeMateria = resultMateria.getInt("QUANTIDADE");
                     String fabricante = resultMateria.getString("FABRICANTE");
                     boolean selecionado = resultMateria.getBoolean("SELECIONADO");
+                    int quantidadeUtilizada = resultMateria.getInt("QUANTUTILIZADA");
 
-                    materias.add(new MateriaPrima(id_materia, nome, quantidadeMateria, fabricante, selecionado));
+                    materias.add(new MateriaPrima(id_materia, nome, quantidadeMateria, fabricante, selecionado, quantidadeUtilizada));
                 }
                 lista.add(new OrdemProducao(id_ordem, venda, materias, recursos, status,
                         dataInicio, dataTermino, dataPrev, tempoEstimado));
