@@ -628,7 +628,6 @@
                   <Format format="##" subtype="-1" type="5"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="text" type="java.lang.String" value="  "/>
               </Properties>
             </Component>
           </SubComponents>
