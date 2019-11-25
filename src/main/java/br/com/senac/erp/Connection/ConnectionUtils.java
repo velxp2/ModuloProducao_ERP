@@ -13,7 +13,7 @@ public class ConnectionUtils {
     public static Connection getConnection() throws SQLException {
         Connection conn = null;
 
-        String dbURL = "jdbc:mysql://localhost:3307/ERP";
+        String dbURL = "jdbc:mysql://localhost:3306/ERP";
         Properties properties = new Properties();
         properties.put("user", "root");
         properties.put("password", "");

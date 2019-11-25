@@ -550,9 +550,20 @@ public class TelaLista extends javax.swing.JFrame {
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
         CardLayout card = (CardLayout) mainPanel.getLayout();
         card.show(mainPanel, "producaoPanel");
+        int row = ordemTable.getSelectedRow();
+        int id = (int) ordemTable.getValueAt(row, 0);
+
+        OrdemProducao ordemP = daoProducao.obter(id);
         
         btnSalvar.setEnabled(false);
-        btnAlteracao.setEnabled(true);
+        if(ordemP.getStatu().equals("Cancelado")){
+            btnAlteracao.setEnabled(false);
+            btnCancelar.setEnabled(false);
+        } else {
+            btnAlteracao.setEnabled(true);
+            btnCancelar.setEnabled(true);
+        }
+        
 
         codigoTxt.setEnabled(false);
         codigoVendaTxt.setEnabled(false);
@@ -564,11 +575,6 @@ public class TelaLista extends javax.swing.JFrame {
         tempotxt.setEnabled(false);
         recursosTxt.setEnabled(false);
         materiaTable.setEnabled(false);
-
-        int row = ordemTable.getSelectedRow();
-        int id = (int) ordemTable.getValueAt(row, 0);
-
-        OrdemProducao ordemP = daoProducao.obter(id);
 
         List<MateriaPrima> materias = ordemP.getMaterias();
 
@@ -639,7 +645,72 @@ public class TelaLista extends javax.swing.JFrame {
     }//GEN-LAST:event_quantidadeProdTxtActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
+        OrdemProducao ordemP = new OrdemProducao();
+        OrdemVenda ordemV = new OrdemVenda();
+        List<MateriaPrima> materias = new ArrayList<>();
+
+        try {
+            int rows = materiaTable.getRowCount();
+            int cont = 0;
+            for (int i = 0; i < rows; i++) {
+                if ((boolean) materiaTable.getValueAt(i, 0)) {
+                    cont++;
+                }
+            }
+            if (cont > 0) {
+                ordemV.setId(Integer.parseInt(codigoVendaTxt.getText()));
+                ordemV.setProduto(produtoProdTxt.getText());
+                ordemV.setQuantidadeProd(Integer.parseInt(quantidadeProdTxt.getText()));
+                ordemP.setOrdemVenda(ordemV);
+
+                ordemP.setId(Integer.parseInt(codigoTxt.getText()));
+                ordemP.setRecurso(Integer.parseInt(recursosTxt.getText()));
+                ordemP.setStatu("Cancelado");
+                ordemP.setDataInicio(dataIniciotxt.getText());
+                ordemP.setDataPrevista(dataPrevtxt.getText());
+                ordemP.setDataTermino(dataTermtxt.getText());
+                ordemP.setTempoEstimado(tempotxt.getText());
+
+                for (int i = 0; i < rows; i++) {
+
+                    MateriaPrima materia = new MateriaPrima();
+                    if ((boolean) materiaTable.getValueAt(i, 0)) {
+                        materia.setSelecionado((boolean) materiaTable.getValueAt(i, 0));
+                        materia.setId((int) materiaTable.getValueAt(i, 1));
+                        materia.setNome((String) materiaTable.getValueAt(i, 2));
+                        int quantidade = (int) materiaTable.getValueAt(i, 3);
+                        materia.setQuantidade(quantidade);
+                        materia.setFabricante((String) materiaTable.getValueAt(i, 4));
+                        int quantidadeUtilizada = (int) materiaTable.getValueAt(i, 3);
+                        materia.setQuantidadeUtilizada(quantidadeUtilizada);
+                        materias.add(materia);
+                    }
+                }
+                ordemP.setMaterias(materias);
+                daoProducao.editar(ordemP);
+                int resposta = JOptionPane.showConfirmDialog(null, "Deseja Cancelar essa Ordem de produção?",
+                        "Cancelar", JOptionPane.OK_CANCEL_OPTION);
+                if (resposta == 0) {
+                    CardLayout card = (CardLayout) mainPanel.getLayout();
+                    card.show(mainPanel, "listaPanel");
+                    carregarTabelaOrdens();
+                    limpar();
+                    statusCombo.setEnabled(false);
+                    dataTermtxt.setEnabled(false);
+                    btnAlteracao.setEnabled(false);
+                    btnCancelar.setEnabled(false);
+                    btnSalvar.setEnabled(false);
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Selecione os recursos que serão utilizado na produção!",
+                        "Falta de Recursos", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaLista.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Ordem de Produção não gerada!"
+                    + "\nContate o desenvolvedor.", "Erro!", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnRelatorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatorioActionPerformed
@@ -764,7 +835,67 @@ public class TelaLista extends javax.swing.JFrame {
     }//GEN-LAST:event_statusComboActionPerformed
 
     private void btnAlteracaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlteracaoActionPerformed
-        // TODO add your handling code here:
+        OrdemProducao ordemP = new OrdemProducao();
+        OrdemVenda ordemV = new OrdemVenda();
+        List<MateriaPrima> materias = new ArrayList<>();
+
+        try {
+            int rows = materiaTable.getRowCount();
+            int cont = 0;
+            for (int i = 0; i < rows; i++) {
+                if ((boolean) materiaTable.getValueAt(i, 0)) {
+                    cont++;
+                }
+            }
+            if (cont > 0) {
+                ordemV.setId(Integer.parseInt(codigoVendaTxt.getText()));
+                ordemV.setProduto(produtoProdTxt.getText());
+                ordemV.setQuantidadeProd(Integer.parseInt(quantidadeProdTxt.getText()));
+                ordemP.setOrdemVenda(ordemV);
+
+                ordemP.setId(Integer.parseInt(codigoTxt.getText()));
+                ordemP.setRecurso(Integer.parseInt(recursosTxt.getText()));
+                ordemP.setStatu((String) statusCombo.getSelectedItem());
+                ordemP.setDataInicio(dataIniciotxt.getText());
+                ordemP.setDataPrevista(dataPrevtxt.getText());
+                ordemP.setDataTermino(dataTermtxt.getText());
+                ordemP.setTempoEstimado(tempotxt.getText());
+
+                for (int i = 0; i < rows; i++) {
+
+                    MateriaPrima materia = new MateriaPrima();
+                    if ((boolean) materiaTable.getValueAt(i, 0)) {
+                        materia.setSelecionado((boolean) materiaTable.getValueAt(i, 0));
+                        materia.setId((int) materiaTable.getValueAt(i, 1));
+                        materia.setNome((String) materiaTable.getValueAt(i, 2));
+                        int quantidade = (int) materiaTable.getValueAt(i, 3);
+                        materia.setQuantidade(quantidade);
+                        materia.setFabricante((String) materiaTable.getValueAt(i, 4));
+                        int quantidadeUtilizada = (int) materiaTable.getValueAt(i, 3);
+                        materia.setQuantidadeUtilizada(quantidadeUtilizada);
+                        materias.add(materia);
+                    }
+                }
+                ordemP.setMaterias(materias);
+                daoProducao.editar(ordemP);
+                int resposta = JOptionPane.showConfirmDialog(null, "Deseja Alterar essa Ordem de produção?",
+                        "Alterar", JOptionPane.OK_CANCEL_OPTION);
+                if (resposta == 0) {
+                    CardLayout card = (CardLayout) mainPanel.getLayout();
+                    card.show(mainPanel, "listaPanel");
+                    carregarTabelaOrdens();
+                    limpar();
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Selecione os recursos que serão utilizado na produção!",
+                        "Falta de Recursos", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TelaLista.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Ordem de Produção não gerada!"
+                    + "\nContate o desenvolvedor.", "Erro!", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnAlteracaoActionPerformed
 
     /**

@@ -31,8 +31,8 @@ public class DaoOrdemProducao {
     private static final String SELECT_ALL_ORDENS_MATERIA = "SELECT * FROM ERP.ORDEMPRODUCAO OP \n"
             + "INNER JOIN ERP.ORDEMPRODUCAO_MATERIAPRIMA OM ON OP.ID = OM.ID_ORDEMPRODUCAO\n"
             + "INNER JOIN ERP.MATERIAPRIMA M ON M.ID = OM.ID_MATERIAPRIMA;";
-//    private static final String DELETE_ORDEM_SQL = "DELETE FROM ERP.ORDEMPRODUCAO WHERE (ID = ?)";
-//    private static final String UPDATE_ORDEM_SQL = "UPDATE ERP.ORDEMPRODUCAO SET NOME = ?,EMAIL = ? WHERE (ID = ?)";
+    private static final String DELETE_ORDEM_SQL = "DELETE FROM ERP.ORDEMPRODUCAO WHERE (ID = ?)";
+    private static final String UPDATE_ORDEM_SQL = "UPDATE ERP.ORDEMPRODUCAO SET STATU = ?,DATATERMINO = ? WHERE (ID = ?)";
 
     public DaoOrdemProducao() {
     }
@@ -177,34 +177,29 @@ public class DaoOrdemProducao {
         }
         return lista;
     }
-//
-//    public boolean deletar(int id) throws SQLException {
-//        boolean rowDeleted;
-//        try (Connection connection =  ConnectionUtils.getConnection(); 
-//            PreparedStatement statement = connection.prepareStatement(DELETE_ORDEM_SQL);) {
-//            statement.setInt(1, id);
-//            rowDeleted = statement.executeUpdate() > 0;
-//        }
-//        return rowDeleted;
-//    }
-//
-//    public boolean editar(OrdemProducao ordem) throws SQLException {
-//        boolean rowUpdated;
-//        try (Connection connection =  ConnectionUtils.getConnection();
-//            PreparedStatement statement = connection.prepareStatement(UPDATE_ORDEM_SQL);) {
-////            statement.setString(1, ordem.getNome());
-////            statement.setString(2, ordem.getSexo());
-////            statement.setString(3, ordem.getDataNascimento());
-////            statement.setString(4, ordem.getCpf());
-////            statement.setString(5, ordem.getEndereco());
-////            statement.setString(6, ordem.getTelefone());
-////            statement.setString(7, ordem.getEmail());
-//            statement.setLong(8, ordem.getId());
-//
-//            rowUpdated = statement.executeUpdate() > 0;
-//        }
-//        return rowUpdated;
-//    }
+
+    public boolean deletar(OrdemProducao ordem) throws SQLException {
+        boolean rowDeleted;
+        try (Connection connection =  ConnectionUtils.getConnection(); 
+            PreparedStatement statement = connection.prepareStatement(DELETE_ORDEM_SQL);) {
+            statement.setInt(1, ordem.getId());
+            rowDeleted = statement.executeUpdate() > 0;
+        }
+        return rowDeleted;
+    }
+
+    public boolean editar(OrdemProducao ordem) throws SQLException {
+        boolean rowUpdated;
+        try (Connection connection =  ConnectionUtils.getConnection();
+            PreparedStatement statement = connection.prepareStatement(UPDATE_ORDEM_SQL);) {
+            statement.setString(1, ordem.getStatu());
+            statement.setString(2, ordem.getDataTermino());
+            statement.setLong(3, ordem.getId());
+
+            rowUpdated = statement.executeUpdate() > 0;
+        }
+        return rowUpdated;
+    }
 
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {
