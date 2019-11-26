@@ -75,7 +75,7 @@ public class TelaLista extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        statusCombo = new javax.swing.JComboBox<>();
+        statusCombo = new javax.swing.JComboBox<String>();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
@@ -153,17 +153,17 @@ public class TelaLista extends javax.swing.JFrame {
         ListaPanelLayout.setHorizontalGroup(
             ListaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(ListaPanelLayout.createSequentialGroup()
-                .addContainerGap(156, Short.MAX_VALUE)
-                .addGroup(ListaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(156, 156, 156)
+                .addGroup(ListaPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ListaPanelLayout.createSequentialGroup()
                         .addComponent(btnInserir, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(227, 227, 227)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
                         .addComponent(btnAlterar, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(OrdemProducaoLabel)
                     .addComponent(jScrollPane1))
-                .addContainerGap(157, Short.MAX_VALUE))
+                .addGap(157, 157, 157))
             .addGroup(ListaPanelLayout.createSequentialGroup()
-                .addGap(454, 454, 454)
+                .addGap(455, 455, 455)
                 .addComponent(btnRelatorio, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -262,7 +262,7 @@ public class TelaLista extends javax.swing.JFrame {
 
         jLabel7.setText("Status da produção:");
 
-        statusCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Selecione um status ...", "Em produção", "Pêndente", "Aguardando manutenção de ativo", "Aguardando recurso", "Finalizado", "Cancelado" }));
+        statusCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Selecione um status ...", "Em produção", "Pendente", "Aguardando manutenção de ativo", "Aguardando recurso", "Finalizado", "Cancelado" }));
         statusCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 statusComboActionPerformed(evt);
@@ -353,7 +353,6 @@ public class TelaLista extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         recursosTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        recursosTxt.setText("  ");
 
         btnAlteracao.setText("Alterar");
         btnAlteracao.addActionListener(new java.awt.event.ActionListener() {
@@ -574,7 +573,6 @@ public class TelaLista extends javax.swing.JFrame {
         btnBuscarVenda.setEnabled(false);
         tempotxt.setEnabled(false);
         recursosTxt.setEnabled(false);
-        materiaTable.setEnabled(false);
 
         List<MateriaPrima> materias = ordemP.getMaterias();
 
@@ -634,7 +632,8 @@ public class TelaLista extends javax.swing.JFrame {
                 produtoProdTxt.setText(ordemVenda.getProduto());
                 quantidadeProdTxt.setText(Integer.toString(ordemVenda.getQuantidadeProd()));
             } catch (Exception e) {
-
+                JOptionPane.showMessageDialog(null, "Ordem de venda não encontrada!", 
+                        "Erro!", JOptionPane.ERROR_MESSAGE);
             }
 
         }
@@ -688,6 +687,7 @@ public class TelaLista extends javax.swing.JFrame {
                 }
                 ordemP.setMaterias(materias);
                 daoProducao.editar(ordemP);
+                JavaMailApp.dispararEmail(ordemP);
                 int resposta = JOptionPane.showConfirmDialog(null, "Deseja Cancelar essa Ordem de produção?",
                         "Cancelar", JOptionPane.OK_CANCEL_OPTION);
                 if (resposta == 0) {
@@ -720,7 +720,7 @@ public class TelaLista extends javax.swing.JFrame {
         try {
             
             Document doc = new Document();
-            PdfWriter.getInstance(doc, new FileOutputStream("C:\\Users\\Matheus\\Desktop\\Relatorio.pdf"));
+            PdfWriter.getInstance(doc, new FileOutputStream("C:\\Users\\victo\\Desktop\\Relatorio.pdf"));
             doc.open();
             PdfPTable pdfTable = new PdfPTable(ordemTable.getColumnCount());
             //adding table headers
@@ -728,7 +728,7 @@ public class TelaLista extends javax.swing.JFrame {
                 pdfTable.addCell(ordemTable.getColumnName(i));
             }
             //extracting data from the JTable and inserting it to PdfPTable
-            for (int rows = 0; rows < ordemTable.getRowCount() - 1; rows++) {
+            for (int rows = 0; rows < ordemTable.getRowCount(); rows++) {
                 for (int cols = 0; cols < ordemTable.getColumnCount(); cols++) {
                     
                     
@@ -739,7 +739,8 @@ public class TelaLista extends javax.swing.JFrame {
             doc.add(pdfTable);
             doc.close();
             
-            
+            JOptionPane.showMessageDialog(null, "Relatório gerado com sucesso.", 
+                    "Relatório", JOptionPane.INFORMATION_MESSAGE);
             
         } catch(DocumentException de) {
             System.err.println(de.getMessage());
@@ -796,7 +797,7 @@ public class TelaLista extends javax.swing.JFrame {
                         int quantidade = (int) materiaTable.getValueAt(i, 3);
                         materia.setQuantidade(quantidade);
                         materia.setFabricante((String) materiaTable.getValueAt(i, 4));
-                        int quantidadeUtilizada = (int) materiaTable.getValueAt(i, 3);
+                        int quantidadeUtilizada = (int) materiaTable.getValueAt(i, 5);
                         materia.setQuantidadeUtilizada(quantidadeUtilizada);
                         materias.add(materia);
                     }
@@ -878,6 +879,7 @@ public class TelaLista extends javax.swing.JFrame {
                 }
                 ordemP.setMaterias(materias);
                 daoProducao.editar(ordemP);
+                JavaMailApp.dispararEmail(ordemP);
                 int resposta = JOptionPane.showConfirmDialog(null, "Deseja Alterar essa Ordem de produção?",
                         "Alterar", JOptionPane.OK_CANCEL_OPTION);
                 if (resposta == 0) {

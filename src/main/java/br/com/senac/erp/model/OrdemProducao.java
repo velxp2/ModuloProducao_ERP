@@ -110,5 +110,27 @@ public class OrdemProducao {
     public void setTempoEstimado(String tempoEstimado) {
         this.tempoEstimado = tempoEstimado;
     }
+
+    @Override
+    public String toString() {
+        return "\nOrdemProducao " + "\nNúmero da ordem =   " + id + ",\nNúmero da ordem de Venda = " + ordemVenda.getId() 
+                + ",\nProduto a ser produzido =   " + ordemVenda.getProduto()
+                + ",\nQuantidade a ser produzida =   " + ordemVenda.getQuantidadeProd()
+                + ",\n\nMateriais a serem utilizados:\n" + forString(materias)
+                + "\nRecurso = " + recurso + ",\nStatus = " + statu + ",\nData Início  = " + dataInicio + ",\nData Término  = " 
+                + dataTermino + ",\nData Prevista= " + dataPrevista + ",\nTempo Estimado = " + tempoEstimado;
+    }
     
+    public String forString(List<MateriaPrima> materia){
+        String tudao = "";
+        for(MateriaPrima m : materias){
+                    String id = "Id:" + Integer.toString(m.getId());
+                    String nome = "Nome: "+m.getNome();
+                    String quantidade = "Quantidade: "+Integer.toString(m.getQuantidade());
+                    String fabricante = "Fabricante: "+m.getFabricante();
+                    String quantidadeU = "Quantidade utilizada: " + Integer.toString(m.getQuantidadeUtilizada()) + " utilizada";
+                    tudao += id + "\n" + nome + "\n" + quantidade + "\n" + fabricante + "\n" + quantidadeU + "\n\n";
+                }
+        return tudao;
+    }
 }

@@ -48,5 +48,4 @@ public class OrdemVenda {
         this.quantidadeProd = quantidadeProd;
     }
     
-    
 }
