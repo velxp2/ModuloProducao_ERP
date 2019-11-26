@@ -347,11 +347,7 @@ public class TelaLista extends javax.swing.JFrame {
             }
         });
 
-        try {
-            recursosTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
+        recursosTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));
         recursosTxt.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
         btnAlteracao.setText("Alterar");
