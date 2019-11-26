@@ -14,8 +14,7 @@ import javax.mail.internet.MimeMessage;
 public class JavaMailApp {
 
     public static void dispararEmail(OrdemProducao ordemproducao) {
-        
-       
+
         Properties props = new Properties();
         /**
          * Parâmetros de conexão com servidor Gmail
@@ -27,15 +26,14 @@ public class JavaMailApp {
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.port", "465");
 
-
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
-          
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("erp.mproducao@gmail.com","Senac2019");
-            }
-        });
+
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("erp.mproducao@gmail.com", "Senac2019");
+                    }
+                });
 
         /**
          * Ativa Debug para sessão
@@ -47,69 +45,72 @@ public class JavaMailApp {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("erp.mproducao@gmail.com"));
             //Remetente
-            
-            if (ordemproducao.getStatu().equals("Em produção")){
-                
+
+            if (ordemproducao.getStatu().equals("Em produção")) {
+
                 Address[] toUser = InternetAddress //Destinatário(s)
-                .parse("erp.mproducao@gmail.com");
-                
-            message.setRecipients(Message.RecipientType.TO, toUser);
-            message.setSubject("Ordem "+ordemproducao.getId()+" em Produção");//Assunto
-            message.setText("A produçao da Ordem foi iniciada!!!");
-            
+                        .parse("erp.mproducao@gmail.com, teste@teste.com, adm.efmm@gmail.com, erp.materiais.tads@gmail.com, erp.tfinanceiro@gmail.com, logistica.erpp@gmail.com");
+                String texto = ordemproducao.toString();
+                message.setRecipients(Message.RecipientType.TO, toUser);
+                message.setSubject("Ordem " + ordemproducao.getId() + " em Produção");//Assunto
+                message.setText("A produçao da Ordem foi iniciada!!!\n"
+                        + texto);
+
             }
-            if (ordemproducao.getStatu().equals("Pêndente")){
-                
+            if (ordemproducao.getStatu().equals("Pêndente")) {
+
                 Address[] toUser = InternetAddress //Destinatário(s)
-                .parse("erp.mproducao@gmail.com");
-                
-            message.setRecipients(Message.RecipientType.TO, toUser);
-            message.setSubject("Ordem "+ordemproducao.getId()+" esta pendente de pordução");//Assunto
-            message.setText("A produçao da Ordem esta pendente!!!");
+                        .parse("erp.mproducao@gmail.com, teste@teste.com, adm.efmm@gmail.com, erp.materiais.tads@gmail.com, erp.tfinanceiro@gmail.com, logistica.erpp@gmail.com ");
+                String texto = ordemproducao.toString();
+                message.setRecipients(Message.RecipientType.TO, toUser);
+                message.setSubject("Ordem " + ordemproducao.getId() + " em Produção");//Assunto
+                message.setText("A produçao da Ordem esta pendente!!!\n"
+                        + texto);
             }
-            if (ordemproducao.getStatu().equals("Aguardando manutenção de ativo")){
-                
+            if (ordemproducao.getStatu().equals("Aguardando manutenção de ativo")) {
+
                 Address[] toUser = InternetAddress //Destinatário(s)
-                .parse("erp.mproducao@gmail.com");
-                
-            message.setRecipients(Message.RecipientType.TO, toUser);
-            message.setSubject("Ordem "+ordemproducao.getId()+" esta Aguardando manutenção de ativo");//Assunto
-            message.setText("A produçao da Ordem esta pendente, aguardando manutenção de ativo!!!");
-            
+                        .parse("erp.mproducao@gmail.com, teste@teste.com, adm.efmm@gmail.com, erp.materiais.tads@gmail.com, erp.tfinanceiro@gmail.com, logistica.erpp@gmail.com ");
+                String texto = ordemproducao.toString();
+                message.setRecipients(Message.RecipientType.TO, toUser);
+                message.setSubject("Ordem " + ordemproducao.getId() + " em Produção");//Assunto
+                message.setText("A produçao da Ordem esta pendente, aguardando manutenção de ativo!!!\n"
+                        + texto);
+
             }
-            if (ordemproducao.getStatu().equals("Aguardando recurso")){
-            
+            if (ordemproducao.getStatu().equals("Aguardando recurso")) {
+
                 Address[] toUser = InternetAddress //Destinatário(s)
-                .parse("erp.mproducao@gmail.com");
-                
-            message.setRecipients(Message.RecipientType.TO, toUser);
-            message.setSubject("Ordem "+ordemproducao.getId()+" esta Recurso");//Assunto
-            message.setText("A produçao da Ordem esta pendente, aguardando Recurso!!!");
-            
+                        .parse("erp.materiais.tads@gmail.com");
+
+                message.setRecipients(Message.RecipientType.TO, toUser);
+                message.setSubject("Ordem " + ordemproducao.getId() + " esta Recurso");//Assunto
+                message.setText("A produçao da Ordem esta pendente, aguardando Recurso!!!");
+
             }
-            if (ordemproducao.getStatu().equals("Finalizado")){
-            
+            if (ordemproducao.getStatu().equals("Finalizado")) {
+
                 Address[] toUser = InternetAddress //Destinatário(s)
-                .parse("erp.mproducao@gmail.com");
-                
-            message.setRecipients(Message.RecipientType.TO, toUser);
-            message.setSubject("Ordem "+ordemproducao.getId()+" Foi finalizada");//Assunto
-            message.setText("A produçao foi finalizada!!!");
-            
+                        .parse("erp.mproducao@gmail.com, teste@teste.com, adm.efmm@gmail.com, erp.materiais.tads@gmail.com, erp.tfinanceiro@gmail.com, logistica.erpp@gmail.com ");
+                String texto = ordemproducao.toString();
+                message.setRecipients(Message.RecipientType.TO, toUser);
+                message.setSubject("Ordem " + ordemproducao.getId() + " em Produção");//Assunto
+                message.setText("A produçao foi finalizada!!!\n"
+                        + texto);
+
             }
-            if (ordemproducao.getStatu().equals("Cancelado")){
-            
+            if (ordemproducao.getStatu().equals("Cancelado")) {
+
                 Address[] toUser = InternetAddress //Destinatário(s)
-                .parse("erp.mproducao@gmail.com");
-                
-            message.setRecipients(Message.RecipientType.TO, toUser);
-            message.setSubject("Ordem "+ordemproducao.getId()+" esta Cancelada");//Assunto
-            message.setText("A produçao da Ordem esta cancelada!!!");
-            
+                        .parse("erp.mproducao@gmail.com, teste@teste.com, adm.efmm@gmail.com, erp.materiais.tads@gmail.com, erp.tfinanceiro@gmail.com, logistica.erpp@gmail.com ");
+                String texto = ordemproducao.toString();
+                message.setRecipients(Message.RecipientType.TO, toUser);
+                message.setSubject("Ordem " + ordemproducao.getId() + " em Produção");//Assunto
+                message.setText("A ordem de produção foi cancelada!!!\n"
+                        + texto);
+
             }
-            
-  
-      
+
             /**
              * Método para enviar a mensagem criada
              */
@@ -119,4 +120,4 @@ public class JavaMailApp {
             throw new RuntimeException(e);
         }
     }
-  }
+}

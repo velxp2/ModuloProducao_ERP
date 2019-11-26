@@ -40,10 +40,24 @@ CREATE TABLE ERP.ORDEMPRODUCAO_MATERIAPRIMA (
 );
 
 INSERT INTO ERP.ORDEMVENDA (PRODUTO, QUANTIDADE) VALUES ('REFRIGUERANTE', 2);
-INSERT INTO ERP.ORDEMVENDA (PRODUTO, QUANTIDADE) VALUES ('Merda', 2);
+INSERT INTO ERP.ORDEMVENDA (PRODUTO, QUANTIDADE) VALUES ('Computador Gamer', 4);
+INSERT INTO ERP.ORDEMVENDA (PRODUTO, QUANTIDADE) VALUES ('Notebook', 4);
 
-INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('Placa mãe', 65, 'Lenovo', true, 0);
-INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('Memória RAM', 42, 'SanDisck', true, 0);
+
+INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('Placa mãe', 65, 'Lenovo', false, 0);
+INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('Memória RAM', 65, 'Kingston', false, 0);
+INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('SSD', 65, 'SanDisck', false, 0);
+INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('HDD', 65, 'Seagate', false, 0);
+INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('Processador iCore i7', 65, 'Intel', false, 0);
+INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('Cooler', 65, 'Corsair', false, 0);
+INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('Placa de vídeo GTX 1050', 65, 'NVidia', false, 0);
+INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('Fonte ATX', 65, 'SevenTeam', false, 0);
+INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('Teclado', 65, 'Logitech', false, 0);
+INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('Mouse Optico', 65, 'Razer', false, 0);
+INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('Monitor', 65, 'LG', false, 0);
+INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('Fone', 65, 'HyperX', false, 0);
+INSERT INTO ERP.MATERIAPRIMA (nome, quantidade, fabricante, selecionado, QUANTUTILIZADA) values ('Impressora Multifuncional', 65, 'LG', false, 0);
+
 
 SELECT ID, PRODUTO, QUANTIDADE FROM ERP.ORDEMVENDA WHERE ID =1;
 
